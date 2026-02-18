@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="ItemData" load_steps=3 format=3 uid="uid://c8sl6h5g38amy"]
+
+[ext_resource type="Script" uid="uid://dby64onjtglmw" path="res://_Scripts/item_data.gd" id="1_bo0b2"]
+[ext_resource type="Texture2D" uid="uid://tpxot0i84fv0" path="res://Charactors_png/Tree_01.png" id="2_7pa0f"]
+
+[resource]
+script = ExtResource("1_bo0b2")
+item_name = "树1"
+texture = ExtResource("2_7pa0f")
+custom_offset = Vector2(3.865, -61.1)
+metadata/_custom_type_script = "uid://dby64onjtglmw"

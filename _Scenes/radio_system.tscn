@@ -1,0 +1,25 @@
+[gd_scene load_steps=5 format=3 uid="uid://bqvkkoion3dq3"]
+
+[ext_resource type="Script" uid="uid://didp86o5n7uea" path="res://_Scripts/radio.gd" id="1_a1qyv"]
+[ext_resource type="Script" uid="uid://cg5hpn7lcx8oa" path="res://_Scenes/radio_audio_controller.gd" id="2_qtqkc"]
+[ext_resource type="AudioStream" uid="uid://duk1jom7lblpf" path="res://AudioResource/WhiteNoise.wav" id="3_wcstn"]
+[ext_resource type="AudioStream" uid="uid://ctml17clwecuw" path="res://AudioResource/IMSLP197806-PMLP02397-3-ClairDeLune-j.mp3" id="4_471a7"]
+
+[node name="RadioSystem" type="Node" node_paths=PackedStringArray("ui_container", "freq_label", "audio_controller")]
+script = ExtResource("1_a1qyv")
+ui_container = NodePath("")
+freq_label = NodePath("")
+audio_controller = NodePath("AudioController")
+
+[node name="AudioController" type="Node" parent="."]
+script = ExtResource("2_qtqkc")
+
+[node name="StaticPlayer" type="AudioStreamPlayer" parent="AudioController"]
+stream = ExtResource("3_wcstn")
+autoplay = true
+bus = &"RadioStatic"
+
+[node name="SignalPlayer" type="AudioStreamPlayer" parent="AudioController"]
+stream = ExtResource("4_471a7")
+autoplay = true
+bus = &"RadioSignal"

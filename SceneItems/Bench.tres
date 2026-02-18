@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="ItemData" load_steps=3 format=3 uid="uid://2h2p56622wyg"]
+
+[ext_resource type="PackedScene" uid="uid://do2fnoqe8nwxt" path="res://Items/Item_tscn/Grass.tscn" id="1_1ygql"]
+[ext_resource type="Script" uid="uid://dby64onjtglmw" path="res://_Scripts/item_data.gd" id="2_8n8vd"]
+
+[resource]
+script = ExtResource("2_8n8vd")
+item_name = "草1"
+prefab = ExtResource("1_1ygql")
+metadata/_custom_type_script = "uid://dby64onjtglmw"

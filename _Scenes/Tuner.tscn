@@ -1,0 +1,23 @@
+[gd_scene load_steps=4 format=3 uid="uid://rfkgg3vd7b2r"]
+
+[ext_resource type="Script" uid="uid://nq4k1wnjflgp" path="res://_Scripts/player.gd" id="1_m7ovm"]
+[ext_resource type="Texture2D" uid="uid://djeitku1m4sfe" path="res://Charactors_png/LittleMouse.png" id="2_m18ud"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_m18ud"]
+height = 5.5
+
+[node name="Tuner" type="CharacterBody3D"]
+script = ExtResource("1_m7ovm")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.4003353, 0)
+shape = SubResource("CapsuleShape3D_m18ud")
+debug_color = Color(0, 0.5950001, 0.7, 0.73333335)
+
+[node name="Sprite3D" type="Sprite3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.9999998, 0, 0, 0, 0.9999998, 0, 0, 0)
+pixel_size = 0.005
+billboard = 1
+shaded = true
+alpha_cut = 1
+texture = ExtResource("2_m18ud")

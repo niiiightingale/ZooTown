@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="ItemData" load_steps=3 format=3 uid="uid://bax6od34h3l8w"]
+
+[ext_resource type="PackedScene" uid="uid://cjdbjsy1fm0fs" path="res://Items/Item_tscn/StreetLight.tscn" id="1_mqm7n"]
+[ext_resource type="Script" uid="uid://dby64onjtglmw" path="res://_Scripts/item_data.gd" id="2_f58b2"]
+
+[resource]
+script = ExtResource("2_f58b2")
+item_name = "街灯1"
+prefab = ExtResource("1_mqm7n")
+metadata/_custom_type_script = "uid://dby64onjtglmw"

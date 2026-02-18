@@ -1,0 +1,139 @@
+[gd_scene load_steps=21 format=3 uid="uid://ciss6l3ahf64a"]
+
+[ext_resource type="Script" uid="uid://caedyb5kvandx" path="res://_Scripts/CameraRig.gd" id="1_tlwt5"]
+[ext_resource type="PackedScene" uid="uid://rfkgg3vd7b2r" path="res://_Scenes/Tuner.tscn" id="2_fj7yv"]
+[ext_resource type="Texture2D" uid="uid://ccfabjvim8k6p" path="res://UI/Mouse_Hand.png" id="3_q1qo6"]
+[ext_resource type="Script" uid="uid://dny15j820sm28" path="res://_Scenes/cursor_vistualizer.gd" id="4_l3g8g"]
+[ext_resource type="Texture2D" uid="uid://dddth08tcs8c8" path="res://UI/MOUSE.png" id="5_3f5lo"]
+[ext_resource type="Script" uid="uid://bjx5ty3xeodig" path="res://_Scripts/signal_zone.gd" id="6_dwbse"]
+[ext_resource type="Material" uid="uid://ci1oxqj42gkrt" path="res://Shader/radar_material.tres" id="7_bebxy"]
+[ext_resource type="Resource" uid="uid://bax6od34h3l8w" path="res://SceneItems/StreetLight.tres" id="7_q1qo6"]
+[ext_resource type="PackedScene" uid="uid://dfxdg40080s4u" path="res://_Scenes/HUD.tscn" id="7_xemsm"]
+[ext_resource type="Script" uid="uid://mkmkmtdqy0e2" path="res://_Scenes/placement_manager.gd" id="8_70437"]
+[ext_resource type="Shader" uid="uid://b37cxc0dcrjf3" path="res://Shader/grid_material.gdshader" id="8_bebxy"]
+[ext_resource type="Texture2D" uid="uid://deomqhnga73dg" path="res://UI/Cursor_Bin.png" id="8_mtdta"]
+[ext_resource type="Script" uid="uid://bbnwsqwiy4k7v" path="res://_Scripts/placement_vistualizer.gd" id="8_q1qo6"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_fj7yv"]
+sky_top_color = Color(0.38928655, 0.38928664, 0.38928658, 1)
+sky_horizon_color = Color(1.0077229, 1.0077227, 1.0077226, 1)
+ground_bottom_color = Color(0.5409909, 0.5409905, 0.5409902, 1)
+ground_horizon_color = Color(1.0077229, 1.0077227, 1.0077226, 1)
+
+[sub_resource type="Sky" id="Sky_tlwt5"]
+sky_material = SubResource("ProceduralSkyMaterial_fj7yv")
+
+[sub_resource type="Environment" id="Environment_aqk2v"]
+background_mode = 2
+sky = SubResource("Sky_tlwt5")
+tonemap_mode = 2
+glow_enabled = true
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_036b0"]
+size = Vector3(4, 5, 4)
+
+[sub_resource type="WorldBoundaryShape3D" id="WorldBoundaryShape3D_xemsm"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_q1qo6"]
+render_priority = 0
+shader = ExtResource("8_bebxy")
+shader_parameter/line_color = Color(0, 0.9372549, 0, 0.45490196)
+shader_parameter/bg_color = Color(0.09019608, 0.09019608, 0.9764706, 0)
+shader_parameter/line_thickness = 0.06800000323000001
+shader_parameter/base_grid_size = 0.5
+shader_parameter/active_item_cells = Vector2(1, 1)
+shader_parameter/is_terrain_mode = false
+shader_parameter/cross_size = 0.24000001070148
+shader_parameter/dash_gap = 0.275
+shader_parameter/mouse_world_pos = Vector3(0, 0, 0)
+shader_parameter/show_radius = 10.0
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_xemsm"]
+
+[node name="World" type="Node3D"]
+
+[node name="Hud" parent="." instance=ExtResource("7_xemsm")]
+visible = false
+
+[node name="Control" parent="Hud" index="0"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = 0.0
+offset_bottom = 0.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.7091108, -0.053944573, -0.70303065, -0.7007536, -0.056583185, 0.7111559, -0.078142695, 0.99693954, 0.002321899, 0, 0, 0)
+shadow_enabled = true
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_aqk2v")
+
+[node name="CameraRig" type="Node3D" parent="." node_paths=PackedStringArray("target")]
+script = ExtResource("1_tlwt5")
+target = NodePath("../Tuner")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="CameraRig"]
+layer = 100
+
+[node name="VirtualCursor" type="Sprite2D" parent="CameraRig/CanvasLayer"]
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("3_q1qo6")
+offset = Vector2(35.345, 32.17)
+script = ExtResource("4_l3g8g")
+tex_normal = ExtResource("5_3f5lo")
+tex_build = ExtResource("3_q1qo6")
+tex_delete = ExtResource("8_mtdta")
+
+[node name="Camera3D" type="Camera3D" parent="CameraRig"]
+transform = Transform3D(-1, -6.181723e-08, 6.181723e-08, 0, 0.7071067, 0.7071067, -8.742278e-08, 0.7071067, -0.7071067, 0, 16.13, -16.08)
+fov = 30.0
+size = 25.0
+
+[node name="Tuner" parent="." instance=ExtResource("2_fj7yv")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.3903091, 0)
+visible = false
+move_speed = 7.0
+
+[node name="Area3D" type="Area3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -3)
+visible = false
+script = ExtResource("6_dwbse")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 2, -1.5)
+shape = SubResource("BoxShape3D_036b0")
+
+[node name="PlacementManager" type="Node3D" parent="." node_paths=PackedStringArray("camera_rig", "visualizer")]
+script = ExtResource("8_70437")
+base_cell_size = 0.5
+current_item = ExtResource("7_q1qo6")
+camera_rig = NodePath("../CameraRig")
+visualizer = NodePath("PlacementVistualizer")
+trash_cursor = ExtResource("8_mtdta")
+
+[node name="PlacementVistualizer" type="Node3D" parent="PlacementManager"]
+script = ExtResource("8_q1qo6")
+radar_material = ExtResource("7_bebxy")
+base_cell_size = 0.5
+valid_preview_color = Color(0.37254903, 1, 0.23529412, 0.5254902)
+invalid_preview_color = Color(1, 0.5019608, 0.5019608, 0.4392157)
+
+[node name="StaticBody3D" type="StaticBody3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D"]
+shape = SubResource("WorldBoundaryShape3D_xemsm")
+debug_color = Color(0, 0.5446108, 0.9289354, 1)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(100, 0, 0, 0, 100, 0, 0, 0, 100, 0.00011301041, 0.014912853, 0.008666873)
+visible = false
+material_override = SubResource("ShaderMaterial_q1qo6")
+mesh = SubResource("PlaneMesh_xemsm")
+
+[connection signal="body_entered" from="Area3D" to="Area3D" method="_on_body_entered"]
+[connection signal="body_exited" from="Area3D" to="Area3D" method="_on_body_exited"]
+
+[editable path="Hud"]

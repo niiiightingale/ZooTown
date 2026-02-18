@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="ItemData" load_steps=3 format=3 uid="uid://c666o0yud17ke"]
+
+[ext_resource type="Script" uid="uid://dby64onjtglmw" path="res://_Scripts/item_data.gd" id="1_yv25f"]
+[ext_resource type="Texture2D" uid="uid://byhfbychopfik" path="res://SceneItems/Grounds_png/Tile_Grass.png" id="2_n2qe7"]
+
+[resource]
+script = ExtResource("1_yv25f")
+item_name = "Grass_01"
+texture = ExtResource("2_n2qe7")
+item_type = 2
+auto_align_bottom = false
+terrain_rank = 3
+metadata/_custom_type_script = "uid://dby64onjtglmw"

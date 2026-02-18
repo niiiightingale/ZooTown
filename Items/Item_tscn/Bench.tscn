@@ -1,0 +1,21 @@
+[gd_scene load_steps=4 format=3 uid="uid://bo0hs3tusgpix"]
+
+[ext_resource type="Texture2D" uid="uid://vhvpr7k3v73r" path="res://Items/Item_sprites/Bench.tres" id="1_xgh1q"]
+[ext_resource type="PackedScene" uid="uid://c130slvteas1p" path="res://Items/Item_Components/FootprintComponent.tscn" id="2_ijsdn"]
+[ext_resource type="PackedScene" uid="uid://bsm26dli1bv85" path="res://Items/Item_Components/destructible_component.tscn" id="3_7m16e"]
+
+[node name="Bench" type="Node3D"]
+
+[node name="Sprite3D" type="Sprite3D" parent="."]
+transform = Transform3D(0.431102, 0, 0, 0, 0.431102, 0, 0, 0, 0.431102, 0, 0.40395653, 0.32981682)
+billboard = 1
+alpha_cut = 1
+texture = ExtResource("1_xgh1q")
+
+[node name="FootprintComponent" parent="." instance=ExtResource("2_ijsdn")]
+footprint_map = "XXX
+XOX
+XXX"
+cell_size = 0.5
+
+[node name="DestructibleComponent" parent="." instance=ExtResource("3_7m16e")]

@@ -1,0 +1,20 @@
+[gd_scene load_steps=4 format=3 uid="uid://do2fnoqe8nwxt"]
+
+[ext_resource type="Texture2D" uid="uid://db0bti1p64pwb" path="res://Items/Item_sprites/Grass_01.tres" id="1_wamfr"]
+[ext_resource type="PackedScene" uid="uid://c130slvteas1p" path="res://Items/Item_Components/FootprintComponent.tscn" id="2_m0hqt"]
+[ext_resource type="PackedScene" uid="uid://bsm26dli1bv85" path="res://Items/Item_Components/destructible_component.tscn" id="3_ojjoc"]
+
+[node name="Grass" type="Node3D"]
+
+[node name="Sprite3D" type="Sprite3D" parent="."]
+transform = Transform3D(0.82414544, 0, 0, 0, 0.82414544, 0, 0, 0, 0.82414544, 0, 0.84441495, 0.051352978)
+billboard = 1
+alpha_cut = 1
+texture = ExtResource("1_wamfr")
+
+[node name="FootprintComponent" parent="." instance=ExtResource("2_m0hqt")]
+footprint_map = "XXX
+XOX
+XXX"
+
+[node name="DestructibleComponent" parent="." instance=ExtResource("3_ojjoc")]
