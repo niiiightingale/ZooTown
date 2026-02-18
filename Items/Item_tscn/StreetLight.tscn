@@ -1,8 +1,9 @@
-[gd_scene load_steps=4 format=3 uid="uid://cjdbjsy1fm0fs"]
+[gd_scene load_steps=5 format=3 uid="uid://cjdbjsy1fm0fs"]
 
 [ext_resource type="Texture2D" uid="uid://cxqkjl3mbqbpf" path="res://Items/Item_sprites/Streetlight.tres" id="1_cxaau"]
 [ext_resource type="PackedScene" uid="uid://c130slvteas1p" path="res://Items/Item_Components/FootprintComponent.tscn" id="2_vluvl"]
-[ext_resource type="PackedScene" uid="uid://bsm26dli1bv85" path="res://Items/Item_Components/destructible_component.tscn" id="3_2nm1v"]
+[ext_resource type="PackedScene" uid="uid://bsm26dli1bv85" path="res://Items/Item_Components/DestructibleComponent.tscn" id="3_2nm1v"]
+[ext_resource type="PackedScene" uid="uid://dlh3rdmhm5iya" path="res://Items/Item_Components/TweenComponent.tscn" id="4_vluvl"]
 
 [node name="StreetLight" type="Node3D"]
 
@@ -18,3 +19,5 @@ XOX
 XXX"
 
 [node name="DestructibleComponent" parent="." instance=ExtResource("3_2nm1v")]
+
+[node name="TweenComponent" parent="." instance=ExtResource("4_vluvl")]

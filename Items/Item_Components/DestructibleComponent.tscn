@@ -4,4 +4,3 @@
 
 [node name="DestructibleComponent" type="Node"]
 script = ExtResource("1_s3xfh")
-hits_to_destroy = 3

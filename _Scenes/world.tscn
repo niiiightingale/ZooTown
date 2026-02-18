@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=3 uid="uid://ciss6l3ahf64a"]
+[gd_scene load_steps=22 format=3 uid="uid://ciss6l3ahf64a"]
 
 [ext_resource type="Script" uid="uid://caedyb5kvandx" path="res://_Scripts/CameraRig.gd" id="1_tlwt5"]
 [ext_resource type="PackedScene" uid="uid://rfkgg3vd7b2r" path="res://_Scenes/Tuner.tscn" id="2_fj7yv"]
@@ -7,12 +7,13 @@
 [ext_resource type="Texture2D" uid="uid://dddth08tcs8c8" path="res://UI/MOUSE.png" id="5_3f5lo"]
 [ext_resource type="Script" uid="uid://bjx5ty3xeodig" path="res://_Scripts/signal_zone.gd" id="6_dwbse"]
 [ext_resource type="Material" uid="uid://ci1oxqj42gkrt" path="res://Shader/radar_material.tres" id="7_bebxy"]
-[ext_resource type="Resource" uid="uid://bax6od34h3l8w" path="res://SceneItems/StreetLight.tres" id="7_q1qo6"]
 [ext_resource type="PackedScene" uid="uid://dfxdg40080s4u" path="res://_Scenes/HUD.tscn" id="7_xemsm"]
 [ext_resource type="Script" uid="uid://mkmkmtdqy0e2" path="res://_Scenes/placement_manager.gd" id="8_70437"]
 [ext_resource type="Shader" uid="uid://b37cxc0dcrjf3" path="res://Shader/grid_material.gdshader" id="8_bebxy"]
 [ext_resource type="Texture2D" uid="uid://deomqhnga73dg" path="res://UI/Cursor_Bin.png" id="8_mtdta"]
 [ext_resource type="Script" uid="uid://bbnwsqwiy4k7v" path="res://_Scripts/placement_vistualizer.gd" id="8_q1qo6"]
+[ext_resource type="Resource" uid="uid://diuugi04stlg0" path="res://SceneItems/Grass_01.tres" id="10_3f5lo"]
+[ext_resource type="Texture2D" uid="uid://b4fm2ftvrfv0b" path="res://Items/Item_sprites/Land_Tex.png" id="14_ax72e"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_fj7yv"]
 sky_top_color = Color(0.38928655, 0.38928664, 0.38928658, 1)
@@ -88,7 +89,7 @@ tex_build = ExtResource("3_q1qo6")
 tex_delete = ExtResource("8_mtdta")
 
 [node name="Camera3D" type="Camera3D" parent="CameraRig"]
-transform = Transform3D(-1, -6.181723e-08, 6.181723e-08, 0, 0.7071067, 0.7071067, -8.742278e-08, 0.7071067, -0.7071067, 0, 16.13, -16.08)
+transform = Transform3D(-1, 6.181723e-08, -6.181723e-08, 0, 0.7071067, 0.7071067, 8.742278e-08, 0.7071067, -0.7071067, 0, 16.13, -16.08)
 fov = 30.0
 size = 25.0
 
@@ -109,10 +110,9 @@ shape = SubResource("BoxShape3D_036b0")
 [node name="PlacementManager" type="Node3D" parent="." node_paths=PackedStringArray("camera_rig", "visualizer")]
 script = ExtResource("8_70437")
 base_cell_size = 0.5
-current_item = ExtResource("7_q1qo6")
+current_item = ExtResource("10_3f5lo")
 camera_rig = NodePath("../CameraRig")
 visualizer = NodePath("PlacementVistualizer")
-trash_cursor = ExtResource("8_mtdta")
 
 [node name="PlacementVistualizer" type="Node3D" parent="PlacementManager"]
 script = ExtResource("8_q1qo6")
@@ -132,6 +132,11 @@ transform = Transform3D(100, 0, 0, 0, 100, 0, 0, 0, 100, 0.00011301041, 0.014912
 visible = false
 material_override = SubResource("ShaderMaterial_q1qo6")
 mesh = SubResource("PlaneMesh_xemsm")
+
+[node name="Ground" type="Sprite3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 0, 0)
+sorting_offset = -1000.0
+texture = ExtResource("14_ax72e")
 
 [connection signal="body_entered" from="Area3D" to="Area3D" method="_on_body_entered"]
 [connection signal="body_exited" from="Area3D" to="Area3D" method="_on_body_exited"]

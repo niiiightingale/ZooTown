@@ -1,8 +1,9 @@
-[gd_scene load_steps=4 format=3 uid="uid://bo0hs3tusgpix"]
+[gd_scene load_steps=5 format=3 uid="uid://bo0hs3tusgpix"]
 
 [ext_resource type="Texture2D" uid="uid://vhvpr7k3v73r" path="res://Items/Item_sprites/Bench.tres" id="1_xgh1q"]
 [ext_resource type="PackedScene" uid="uid://c130slvteas1p" path="res://Items/Item_Components/FootprintComponent.tscn" id="2_ijsdn"]
-[ext_resource type="PackedScene" uid="uid://bsm26dli1bv85" path="res://Items/Item_Components/destructible_component.tscn" id="3_7m16e"]
+[ext_resource type="PackedScene" uid="uid://bsm26dli1bv85" path="res://Items/Item_Components/DestructibleComponent.tscn" id="3_7m16e"]
+[ext_resource type="PackedScene" uid="uid://dlh3rdmhm5iya" path="res://Items/Item_Components/TweenComponent.tscn" id="4_ijsdn"]
 
 [node name="Bench" type="Node3D"]
 
@@ -16,6 +17,7 @@ texture = ExtResource("1_xgh1q")
 footprint_map = "XXX
 XOX
 XXX"
-cell_size = 0.5
 
 [node name="DestructibleComponent" parent="." instance=ExtResource("3_7m16e")]
+
+[node name="TweenComponent" parent="." instance=ExtResource("4_ijsdn")]
