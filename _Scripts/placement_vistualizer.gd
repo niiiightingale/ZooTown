@@ -12,7 +12,7 @@ var preview_sprite: Sprite3D
 var footprint_root: Node3D
 var decal_material: StandardMaterial3D
 var points_multimesh: MultiMeshInstance3D
-var grid_radius: int = 10
+@export var grid_radius: int = 10
 
 func _ready() -> void:
 	preview_root = Node3D.new()
@@ -70,21 +70,36 @@ func set_item(item: ItemData, footprint_cells: Array[Vector2i], cloned_sprite: S
 	else:
 		hide_build_preview()
 
-func update_radar(center_pos: Vector3, mouse_pos: Vector3) -> void:
+# === 🎯 核心变更：战棋风格实心方块雷达 ===
+func update_radar(center_pos: Vector3, _mouse_pos: Vector3) -> void:
+	# 注意：第二个参数 mouse_pos 现在没用了，因为我们是“以格子为中心”而不是“以鼠标像素为中心”
+	# 不过为了保持接口兼容，参数留着也没事，加个下划线 _mouse_pos 表示暂不使用
+	
 	points_multimesh.visible = true
 	var index = 0
-	var max_dist = grid_radius * base_cell_size
-	var mouse_pos_2d = Vector2(mouse_pos.x, mouse_pos.z)
+	
+	# 现在的逻辑非常纯粹：遍历多少格，就显示多少格
+	# 范围完全由 export var grid_radius 控制
 	for x in range(-grid_radius, grid_radius + 1):
 		for z in range(-grid_radius, grid_radius + 1):
-			var pt = center_pos + Vector3(x * base_cell_size, 0.02, z * base_cell_size)
-			var cell = Vector2i(round(pt.x/base_cell_size), round(pt.z/base_cell_size))
-			var is_occ = WorldManager.is_cell_occupied(cell, false)
-			var dist = Vector2(pt.x, pt.z).distance_to(mouse_pos_2d)
-			var alpha = 1.0 - smoothstep(max_dist-2.0, max_dist, dist)
-			var t = Transform3D().translated(pt)
+			# 1. 算出点的世界坐标
+			var point_world_pos = center_pos + Vector3(x * base_cell_size, 0.02, z * base_cell_size)
+			var cell_coord = Vector2i(round(point_world_pos.x / base_cell_size), round(point_world_pos.z / base_cell_size))
+			
+			# 2. 查占用状态
+			var is_occupied = WorldManager.is_cell_occupied(cell_coord, false)
+			
+			# 3. 设置位置
+			var t = Transform3D().translated(point_world_pos)
 			points_multimesh.multimesh.set_instance_transform(index, t)
-			points_multimesh.multimesh.set_instance_custom_data(index, Color(1.0 if is_occ else 0.0, alpha, 0.0, 0.0))
+			
+			# 4. 设置颜色与透明度 (硬边缘)
+			# alpha = 1.0 (完全显示)。如果你觉得太亮，可以改成 0.5 或者 0.3
+			var alpha = 1.0 
+			
+			# 传给 Shader：R通道=是否占用, G通道=透明度
+			points_multimesh.multimesh.set_instance_custom_data(index, Color(1.0 if is_occupied else 0.0, alpha, 0.0, 0.0))
+			
 			index += 1
 
 func update_build_preview(pos: Vector3, is_valid: bool) -> void:

@@ -62,7 +62,7 @@ func _process(_delta: float) -> void:
 		return
 	
 	# 使用 CameraRig 的新接口获取屏幕坐标
-	var virtual_mouse_pos = camera_rig.get_cursor_screen_position()
+	var virtual_mouse_pos = GlobalCursor.get_cursor_position()
 	var cam = camera_rig.camera
 	var ground_plane = Plane(Vector3.UP, 0.0)
 	var ray_origin = cam.project_ray_origin(virtual_mouse_pos)
@@ -97,16 +97,15 @@ func _toggle_delete_mode() -> void:
 	_refresh_cursor()
 
 func _refresh_cursor() -> void:
-	if not camera_rig: return
 	
 	if is_delete_mode:
 		# 假设你在 CameraVisualizer 里定义了 DELETE 状态
-		camera_rig.set_cursor_state(CursorVisualizer.CursorState.DELETE)
+		GlobalCursor.set_cursor_state(CursorVisualizer.CursorState.DELETE)
 	else:
 		if current_item:
-			camera_rig.set_cursor_state(CursorVisualizer.CursorState.BUILD)
+			GlobalCursor.set_cursor_state(CursorVisualizer.CursorState.BUILD)
 		else:
-			camera_rig.set_cursor_state(CursorVisualizer.CursorState.NORMAL)
+			GlobalCursor.set_cursor_state(CursorVisualizer.CursorState.NORMAL)
 
 # === 删除逻辑 ===
 func _handle_delete_mode(snapped_pos: Vector3) -> void:

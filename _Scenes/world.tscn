@@ -2,18 +2,15 @@
 
 [ext_resource type="Script" uid="uid://caedyb5kvandx" path="res://_Scripts/CameraRig.gd" id="1_tlwt5"]
 [ext_resource type="PackedScene" uid="uid://rfkgg3vd7b2r" path="res://_Scenes/Tuner.tscn" id="2_fj7yv"]
-[ext_resource type="Texture2D" uid="uid://ccfabjvim8k6p" path="res://UI/Mouse_Hand.png" id="3_q1qo6"]
-[ext_resource type="Script" uid="uid://dny15j820sm28" path="res://_Scenes/cursor_vistualizer.gd" id="4_l3g8g"]
-[ext_resource type="Texture2D" uid="uid://dddth08tcs8c8" path="res://UI/MOUSE.png" id="5_3f5lo"]
 [ext_resource type="Script" uid="uid://bjx5ty3xeodig" path="res://_Scripts/signal_zone.gd" id="6_dwbse"]
 [ext_resource type="Material" uid="uid://ci1oxqj42gkrt" path="res://Shader/radar_material.tres" id="7_bebxy"]
 [ext_resource type="PackedScene" uid="uid://dfxdg40080s4u" path="res://_Scenes/HUD.tscn" id="7_xemsm"]
-[ext_resource type="Script" uid="uid://mkmkmtdqy0e2" path="res://_Scenes/placement_manager.gd" id="8_70437"]
+[ext_resource type="Script" uid="uid://mkmkmtdqy0e2" path="res://_Scripts/placement_manager.gd" id="8_70437"]
 [ext_resource type="Shader" uid="uid://b37cxc0dcrjf3" path="res://Shader/grid_material.gdshader" id="8_bebxy"]
-[ext_resource type="Texture2D" uid="uid://deomqhnga73dg" path="res://UI/Cursor_Bin.png" id="8_mtdta"]
 [ext_resource type="Script" uid="uid://bbnwsqwiy4k7v" path="res://_Scripts/placement_vistualizer.gd" id="8_q1qo6"]
 [ext_resource type="Resource" uid="uid://diuugi04stlg0" path="res://SceneItems/Grass_01.tres" id="10_3f5lo"]
 [ext_resource type="Texture2D" uid="uid://b4fm2ftvrfv0b" path="res://Items/Item_sprites/Land_Tex.png" id="14_ax72e"]
+[ext_resource type="PackedScene" uid="uid://cbs3s3ialsn3b" path="res://_Scenes/PauseMenu.tscn" id="15_bhsij"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_fj7yv"]
 sky_top_color = Color(0.38928655, 0.38928664, 0.38928658, 1)
@@ -51,6 +48,34 @@ shader_parameter/show_radius = 10.0
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_xemsm"]
 
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_ax72e"]
+emission_shape = 3
+emission_box_extents = Vector3(20, 10, 20)
+angle_min = -29.99999
+angle_max = 30.000011
+initial_velocity_min = 0.099999994
+initial_velocity_max = 0.099999994
+gravity = Vector3(0, -0.5, 0)
+scale_min = 0.5
+scale_max = 1.5
+turbulence_enabled = true
+turbulence_noise_scale = 3.0
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ax72e"]
+transparency = 1
+blend_mode = 1
+emission_enabled = true
+emission = Color(0, 1, 0.23333335, 1)
+emission_energy_multiplier = 9.64
+billboard_mode = 3
+particles_anim_h_frames = 1
+particles_anim_v_frames = 1
+particles_anim_loop = false
+
+[sub_resource type="QuadMesh" id="QuadMesh_ax72e"]
+material = SubResource("StandardMaterial3D_ax72e")
+size = Vector2(0.05, 0.05)
+
 [node name="World" type="Node3D"]
 
 [node name="Hud" parent="." instance=ExtResource("7_xemsm")]
@@ -75,18 +100,6 @@ environment = SubResource("Environment_aqk2v")
 [node name="CameraRig" type="Node3D" parent="." node_paths=PackedStringArray("target")]
 script = ExtResource("1_tlwt5")
 target = NodePath("../Tuner")
-
-[node name="CanvasLayer" type="CanvasLayer" parent="CameraRig"]
-layer = 100
-
-[node name="VirtualCursor" type="Sprite2D" parent="CameraRig/CanvasLayer"]
-scale = Vector2(0.5, 0.5)
-texture = ExtResource("3_q1qo6")
-offset = Vector2(35.345, 32.17)
-script = ExtResource("4_l3g8g")
-tex_normal = ExtResource("5_3f5lo")
-tex_build = ExtResource("3_q1qo6")
-tex_delete = ExtResource("8_mtdta")
 
 [node name="Camera3D" type="Camera3D" parent="CameraRig"]
 transform = Transform3D(-1, 6.181723e-08, -6.181723e-08, 0, 0.7071067, 0.7071067, 8.742278e-08, 0.7071067, -0.7071067, 0, 16.13, -16.08)
@@ -120,6 +133,7 @@ radar_material = ExtResource("7_bebxy")
 base_cell_size = 0.5
 valid_preview_color = Color(0.37254903, 1, 0.23529412, 0.5254902)
 invalid_preview_color = Color(1, 0.5019608, 0.5019608, 0.4392157)
+grid_radius = 5
 
 [node name="StaticBody3D" type="StaticBody3D" parent="."]
 
@@ -137,6 +151,16 @@ mesh = SubResource("PlaneMesh_xemsm")
 transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 0, 0)
 sorting_offset = -1000.0
 texture = ExtResource("14_ax72e")
+
+[node name="AmbientParticles" type="GPUParticles3D" parent="."]
+amount = 500
+lifetime = 10.0
+preprocess = 5.0
+fixed_fps = 24
+process_material = SubResource("ParticleProcessMaterial_ax72e")
+draw_pass_1 = SubResource("QuadMesh_ax72e")
+
+[node name="PauseMenu" parent="." instance=ExtResource("15_bhsij")]
 
 [connection signal="body_entered" from="Area3D" to="Area3D" method="_on_body_entered"]
 [connection signal="body_exited" from="Area3D" to="Area3D" method="_on_body_exited"]
