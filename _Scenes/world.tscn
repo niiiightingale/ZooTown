@@ -94,7 +94,7 @@ script = ExtResource("1_tlwt5")
 target = NodePath("../Tuner")
 
 [node name="Camera3D" type="Camera3D" parent="CameraRig"]
-transform = Transform3D(-1, 6.181723e-08, -6.181723e-08, 0, 0.7071067, 0.7071067, 8.742278e-08, 0.7071067, -0.7071067, 0, 16.13, -16.08)
+transform = Transform3D(1, 0, 0, 0, 0.7071067, 0.7071067, 0, -0.7071067, 0.7071067, 0, 16.13, 16.13)
 fov = 30.0
 size = 25.0
 
@@ -131,7 +131,7 @@ material_override = SubResource("ShaderMaterial_q1qo6")
 mesh = SubResource("PlaneMesh_xemsm")
 
 [node name="Ground" type="Sprite3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 0, 0)
+transform = Transform3D(1.0255474, 0, 0, 0, -4.48281e-08, 1.0255474, 0, -1.0255474, -4.48281e-08, -0.063776076, 0.0084142685, -0.021395683)
 sorting_offset = -1000.0
 texture = ExtResource("14_ax72e")
 

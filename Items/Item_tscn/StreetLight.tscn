@@ -8,7 +8,7 @@
 [node name="StreetLight" type="Node3D"]
 
 [node name="Sprite3D" type="Sprite3D" parent="."]
-transform = Transform3D(0.6484331, 0, 0, 0, 0.6484331, 0, 0, 0, 0.6484331, 0.225, 1.639, 0.835)
+transform = Transform3D(0.6484331, 0, 0, 0, 0.6484331, 0, 0, 0, 0.6484331, -0.21737237, 1.6742958, -0.716167)
 billboard = 1
 alpha_cut = 1
 texture = ExtResource("1_cxaau")

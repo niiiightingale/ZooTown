@@ -11,7 +11,7 @@ height = 1.3056641
 [node name="Grass" type="Node3D"]
 
 [node name="Sprite3D" type="Sprite3D" parent="."]
-transform = Transform3D(1.2030978, 0, 0, 0, 1.2030978, 0, 0, 0, 1.2030978, 0, 0.688452, 0.44008923)
+transform = Transform3D(0.69769347, 0, 0, 0, 0.69769347, 0, 0, 0, 0.69769347, 0, 0.688452, 0.06640887)
 billboard = 1
 alpha_cut = 1
 texture = ExtResource("1_wamfr")
