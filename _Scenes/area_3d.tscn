@@ -1,0 +1,17 @@
+[gd_scene load_steps=3 format=3 uid="uid://c8uwv5x2luy6q"]
+
+[ext_resource type="Script" uid="uid://bjx5ty3xeodig" path="res://_Scripts/signal_zone.gd" id="1_ns45e"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_036b0"]
+size = Vector3(4, 5, 4)
+
+[node name="Area3D" type="Area3D"]
+visible = false
+script = ExtResource("1_ns45e")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 2, -1.5)
+shape = SubResource("BoxShape3D_036b0")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
+[connection signal="body_exited" from="." to="." method="_on_body_exited"]

@@ -26,11 +26,8 @@ var hovered_object: Node3D = null
 
 func _ready() -> void:
 	_update_item_data()
-	
-	# 🎯 核心修复：等待一帧，覆盖 CameraRig 的默认设置
-	await get_tree().process_frame
-	_refresh_cursor()
-
+	if is_building_mode:
+		GlobalCursor.set_cursor_state(CursorVisualizer.CursorState.BUILD)
 func _update_item_data() -> void:
 	current_footprint_cells = [Vector2i(0, 0)] 
 	var sprite_clone: Sprite3D = null 
@@ -61,12 +58,12 @@ func _process(_delta: float) -> void:
 		if visualizer: visualizer.hide_all()
 		return
 	
-	# 使用 CameraRig 的新接口获取屏幕坐标
-	var virtual_mouse_pos = GlobalCursor.get_cursor_position()
+	# 我们直接拿 Viewport 的真鼠标位置就行了！不用经过任何中转。
+	var mouse_pos = get_viewport().get_mouse_position()
 	var cam = camera_rig.camera
 	var ground_plane = Plane(Vector3.UP, 0.0)
-	var ray_origin = cam.project_ray_origin(virtual_mouse_pos)
-	var intersection = ground_plane.intersects_ray(ray_origin, cam.project_ray_normal(virtual_mouse_pos))
+	var ray_origin = cam.project_ray_origin(mouse_pos)
+	var intersection = ground_plane.intersects_ray(ray_origin, cam.project_ray_normal(mouse_pos))
 	
 	if intersection != null:
 		var snapped_pos = snap_to_grid(intersection)
@@ -96,17 +93,6 @@ func _toggle_delete_mode() -> void:
 		
 	_refresh_cursor()
 
-func _refresh_cursor() -> void:
-	
-	if is_delete_mode:
-		# 假设你在 CameraVisualizer 里定义了 DELETE 状态
-		GlobalCursor.set_cursor_state(CursorVisualizer.CursorState.DELETE)
-	else:
-		if current_item:
-			GlobalCursor.set_cursor_state(CursorVisualizer.CursorState.BUILD)
-		else:
-			GlobalCursor.set_cursor_state(CursorVisualizer.CursorState.NORMAL)
-
 # === 删除逻辑 ===
 func _handle_delete_mode(snapped_pos: Vector3) -> void:
 	var cell = Vector2i(round(snapped_pos.x / base_cell_size), round(snapped_pos.z / base_cell_size))
@@ -124,7 +110,7 @@ func _handle_delete_mode(snapped_pos: Vector3) -> void:
 			_tint_object(hovered_object, delete_highlight_color)
 	
 	# 删除
-	if Input.is_action_just_pressed("left_mouse") or Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
+	if Input.is_action_just_pressed("left_mouse"):
 		if Input.is_action_just_pressed("left_mouse") and hovered_object:
 			var comp = hovered_object.get_node_or_null("DestructibleComponent")
 			if comp:
@@ -197,3 +183,16 @@ func _reset_hovered_object() -> void:
 	if hovered_object and is_instance_valid(hovered_object):
 		_tint_object(hovered_object, Color.WHITE)
 	hovered_object = null
+	
+func _refresh_cursor() -> void:
+	
+	if is_delete_mode:
+		# 假设你在 CameraVisualizer 里定义了 DELETE 状态
+		GlobalCursor.set_cursor_state(CursorVisualizer.CursorState.DELETE)
+		print("Delete")
+	else:
+		if current_item:
+			GlobalCursor.set_cursor_state(CursorVisualizer.CursorState.BUILD)
+			print("BUILD")
+		else:
+			GlobalCursor.set_cursor_state(CursorVisualizer.CursorState.NORMAL)

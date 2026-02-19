@@ -59,14 +59,17 @@ func _parse_footprint() -> void:
 				var offset = Vector2i(x - origin_pos.x, y - origin_pos.y)
 				occupied_cells.append(offset)
 
-# ==========================================
+
 # 魔法视觉系统：在编辑器里实时生成半透明绿方块
 # ==========================================
 func _update_debug_meshes() -> void:
 	if not is_inside_tree(): return
 	
-	if _debug_node != null:
-		_debug_node.queue_free()
+	# 🎯 核心防泄漏修复：直接去树上找有没有叫这个名字的节点！
+	# 这样就算脚本重启、变量丢失，只要节点还在，就一定能被揪出来杀掉。
+	var old_debug = get_node_or_null("DebugFootprint")
+	if old_debug:
+		old_debug.free() # 在 @tool 里用 free() 更干脆，避免名字冲突
 		
 	_debug_node = Node3D.new()
 	_debug_node.name = "DebugFootprint"
@@ -78,13 +81,11 @@ func _update_debug_meshes() -> void:
 	mat.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
 	
 	var plane_mesh = PlaneMesh.new()
-	# 把方块稍微做小一点点(0.9)，这样拼接起来有网格的缝隙，极其好看！
 	plane_mesh.size = Vector2(cell_size * 0.9, cell_size * 0.9) 
 	
 	for offset in occupied_cells:
 		var mi = MeshInstance3D.new()
 		mi.mesh = plane_mesh
 		mi.material_override = mat
-		# 把逻辑偏移量转化为 3D 世界的真实坐标
 		mi.position = Vector3(offset.x * cell_size, 0.05, offset.y * cell_size)
 		_debug_node.add_child(mi)

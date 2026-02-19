@@ -1,14 +1,17 @@
-[gd_scene load_steps=5 format=3 uid="uid://do2fnoqe8nwxt"]
+[gd_scene load_steps=6 format=3 uid="uid://do2fnoqe8nwxt"]
 
 [ext_resource type="Texture2D" uid="uid://db0bti1p64pwb" path="res://Items/Item_sprites/Grass_01.tres" id="1_wamfr"]
 [ext_resource type="PackedScene" uid="uid://c130slvteas1p" path="res://Items/Item_Components/FootprintComponent.tscn" id="2_m0hqt"]
 [ext_resource type="PackedScene" uid="uid://bsm26dli1bv85" path="res://Items/Item_Components/DestructibleComponent.tscn" id="3_ojjoc"]
 [ext_resource type="PackedScene" uid="uid://dlh3rdmhm5iya" path="res://Items/Item_Components/TweenComponent.tscn" id="4_agamn"]
 
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_agamn"]
+height = 1.3056641
+
 [node name="Grass" type="Node3D"]
 
 [node name="Sprite3D" type="Sprite3D" parent="."]
-transform = Transform3D(1.3313085, 0, 0, 0, 1.3313085, 0, 0, 0, 1.3313085, 0, 0.688452, 0.051352978)
+transform = Transform3D(1.2030978, 0, 0, 0, 1.2030978, 0, 0, 0, 1.2030978, 0, 0.688452, 0.44008923)
 billboard = 1
 alpha_cut = 1
 texture = ExtResource("1_wamfr")
@@ -21,3 +24,9 @@ XXX"
 [node name="DestructibleComponent" parent="." instance=ExtResource("3_ojjoc")]
 
 [node name="TweenComponent" parent="." instance=ExtResource("4_agamn")]
+
+[node name="Area3D" type="Area3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.028808594, 0.49958026, -0.11859131)
+shape = SubResource("CylinderShape3D_agamn")

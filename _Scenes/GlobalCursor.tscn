@@ -6,10 +6,11 @@
 [ext_resource type="Texture2D" uid="uid://dddth08tcs8c8" path="res://UI/MOUSE.png" id="4_qpfmo"]
 [ext_resource type="Texture2D" uid="uid://deomqhnga73dg" path="res://UI/Cursor_Bin.png" id="5_wkwn3"]
 
-[node name="GlobalCursor" type="CanvasLayer"]
+[node name="GlobalCursor" type="CanvasLayer" node_paths=PackedStringArray("visualCursor")]
 process_mode = 3
 layer = 101
 script = ExtResource("1_25lnx")
+visualCursor = NodePath("VirtualCursor")
 
 [node name="VirtualCursor" type="Sprite2D" parent="."]
 process_mode = 3

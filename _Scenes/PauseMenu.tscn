@@ -1,9 +1,10 @@
-[gd_scene load_steps=7 format=3 uid="uid://cbs3s3ialsn3b"]
+[gd_scene load_steps=8 format=3 uid="uid://cbs3s3ialsn3b"]
 
 [ext_resource type="Texture2D" uid="uid://d3u81oxtkbre6" path="res://UI/Button_Continue.tres" id="1_7yioy"]
 [ext_resource type="Script" uid="uid://dtaeeqodl3s65" path="res://_Scripts/pause_menu.gd" id="1_05041"]
 [ext_resource type="FontFile" uid="uid://bc22oq1eh6oex" path="res://Fonts/OMORI_GAME2.ttf" id="2_05041"]
 [ext_resource type="Texture2D" uid="uid://7wvpka3unbum" path="res://UI/Button_Save.tres" id="3_70kav"]
+[ext_resource type="Script" uid="uid://yyh5lcc13ee1" path="res://_Scenes/bouncy_button.gd" id="3_ndvoi"]
 [ext_resource type="Texture2D" uid="uid://0gk6fr118ufx" path="res://UI/Button_Settings.tres" id="4_ndvoi"]
 [ext_resource type="Texture2D" uid="uid://kdpset5gcebm" path="res://UI/Button_Exit.tres" id="5_apq4p"]
 
@@ -20,7 +21,7 @@ grow_horizontal = 2
 grow_vertical = 2
 pivot_offset = Vector2(1280, 720)
 mouse_filter = 2
-color = Color(0, 0, 0, 0.30980393)
+color = Color(0, 0, 0, 0.6156863)
 
 [node name="CenterContainer" type="CenterContainer" parent="."]
 anchors_preset = 15
@@ -39,6 +40,7 @@ alignment = 1
 [node name="Btn_Continue" type="TextureButton" parent="CenterContainer/MenuLayout"]
 layout_mode = 2
 texture_normal = ExtResource("1_7yioy")
+script = ExtResource("3_ndvoi")
 
 [node name="Label" type="Label" parent="CenterContainer/MenuLayout/Btn_Continue"]
 layout_mode = 0
@@ -63,6 +65,7 @@ theme_override_constants/separation = 65
 layout_mode = 2
 size_flags_vertical = 8
 texture_normal = ExtResource("3_70kav")
+script = ExtResource("3_ndvoi")
 
 [node name="Label" type="Label" parent="CenterContainer/MenuLayout/MiddleRow/Btn_Save"]
 layout_mode = 0
@@ -82,6 +85,7 @@ uppercase = true
 layout_mode = 2
 size_flags_vertical = 8
 texture_normal = ExtResource("4_ndvoi")
+script = ExtResource("3_ndvoi")
 
 [node name="Label" type="Label" parent="CenterContainer/MenuLayout/MiddleRow/Btn_Settings"]
 layout_mode = 0
@@ -105,6 +109,7 @@ border_color = Color(1, 0, 0, 0)
 [node name="Btn_Leave" type="TextureButton" parent="CenterContainer/MenuLayout"]
 layout_mode = 2
 texture_normal = ExtResource("5_apq4p")
+script = ExtResource("3_ndvoi")
 
 [node name="Label" type="Label" parent="CenterContainer/MenuLayout/Btn_Leave"]
 layout_mode = 0

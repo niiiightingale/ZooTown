@@ -1,8 +1,7 @@
-[gd_scene load_steps=22 format=3 uid="uid://ciss6l3ahf64a"]
+[gd_scene load_steps=20 format=3 uid="uid://ciss6l3ahf64a"]
 
 [ext_resource type="Script" uid="uid://caedyb5kvandx" path="res://_Scripts/CameraRig.gd" id="1_tlwt5"]
 [ext_resource type="PackedScene" uid="uid://rfkgg3vd7b2r" path="res://_Scenes/Tuner.tscn" id="2_fj7yv"]
-[ext_resource type="Script" uid="uid://bjx5ty3xeodig" path="res://_Scripts/signal_zone.gd" id="6_dwbse"]
 [ext_resource type="Material" uid="uid://ci1oxqj42gkrt" path="res://Shader/radar_material.tres" id="7_bebxy"]
 [ext_resource type="PackedScene" uid="uid://dfxdg40080s4u" path="res://_Scenes/HUD.tscn" id="7_xemsm"]
 [ext_resource type="Script" uid="uid://mkmkmtdqy0e2" path="res://_Scripts/placement_manager.gd" id="8_70437"]
@@ -26,9 +25,8 @@ background_mode = 2
 sky = SubResource("Sky_tlwt5")
 tonemap_mode = 2
 glow_enabled = true
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_036b0"]
-size = Vector3(4, 5, 4)
+volumetric_fog_density = 0.0706
+volumetric_fog_emission = Color(0.14513195, 0.21738547, 0.42709965, 1)
 
 [sub_resource type="WorldBoundaryShape3D" id="WorldBoundaryShape3D_xemsm"]
 
@@ -51,30 +49,24 @@ shader_parameter/show_radius = 10.0
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_ax72e"]
 emission_shape = 3
 emission_box_extents = Vector3(20, 10, 20)
-angle_min = -29.99999
-angle_max = 30.000011
 initial_velocity_min = 0.099999994
 initial_velocity_max = 0.099999994
-gravity = Vector3(0, -0.5, 0)
+gravity = Vector3(0, -12.62, 0)
 scale_min = 0.5
 scale_max = 1.5
-turbulence_enabled = true
 turbulence_noise_scale = 3.0
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ax72e"]
 transparency = 1
 blend_mode = 1
 emission_enabled = true
-emission = Color(0, 1, 0.23333335, 1)
+emission = Color(6.016344e-09, 0.16659406, 0.19490594, 1)
 emission_energy_multiplier = 9.64
-billboard_mode = 3
-particles_anim_h_frames = 1
-particles_anim_v_frames = 1
-particles_anim_loop = false
+billboard_mode = 2
 
 [sub_resource type="QuadMesh" id="QuadMesh_ax72e"]
 material = SubResource("StandardMaterial3D_ax72e")
-size = Vector2(0.05, 0.05)
+size = Vector2(0.05, 0.295)
 
 [node name="World" type="Node3D"]
 
@@ -111,15 +103,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.3903091, 0)
 visible = false
 move_speed = 7.0
 
-[node name="Area3D" type="Area3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -3)
-visible = false
-script = ExtResource("6_dwbse")
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 2, -1.5)
-shape = SubResource("BoxShape3D_036b0")
-
 [node name="PlacementManager" type="Node3D" parent="." node_paths=PackedStringArray("camera_rig", "visualizer")]
 script = ExtResource("8_70437")
 base_cell_size = 0.5
@@ -153,16 +136,15 @@ sorting_offset = -1000.0
 texture = ExtResource("14_ax72e")
 
 [node name="AmbientParticles" type="GPUParticles3D" parent="."]
+visible = false
 amount = 500
 lifetime = 10.0
-preprocess = 5.0
+speed_scale = 5.0
+randomness = 0.5
 fixed_fps = 24
 process_material = SubResource("ParticleProcessMaterial_ax72e")
 draw_pass_1 = SubResource("QuadMesh_ax72e")
 
 [node name="PauseMenu" parent="." instance=ExtResource("15_bhsij")]
-
-[connection signal="body_entered" from="Area3D" to="Area3D" method="_on_body_entered"]
-[connection signal="body_exited" from="Area3D" to="Area3D" method="_on_body_exited"]
 
 [editable path="Hud"]
