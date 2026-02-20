@@ -7,7 +7,7 @@
 [ext_resource type="Script" uid="uid://mkmkmtdqy0e2" path="res://_Scripts/placement_manager.gd" id="8_70437"]
 [ext_resource type="Shader" uid="uid://b37cxc0dcrjf3" path="res://Shader/grid_material.gdshader" id="8_bebxy"]
 [ext_resource type="Script" uid="uid://bbnwsqwiy4k7v" path="res://_Scripts/placement_vistualizer.gd" id="8_q1qo6"]
-[ext_resource type="Resource" uid="uid://diuugi04stlg0" path="res://SceneItems/Grass_01.tres" id="10_3f5lo"]
+[ext_resource type="Resource" uid="uid://diuugi04stlg0" path="res://ItemTres/Grass_01.tres" id="10_3f5lo"]
 [ext_resource type="Texture2D" uid="uid://b4fm2ftvrfv0b" path="res://Items/Item_sprites/Land_Tex.png" id="14_ax72e"]
 [ext_resource type="PackedScene" uid="uid://cbs3s3ialsn3b" path="res://_Scenes/PauseMenu.tscn" id="15_bhsij"]
 
@@ -52,10 +52,11 @@ emission_shape = 3
 emission_box_extents = Vector3(20, 10, 20)
 initial_velocity_min = 0.099999994
 initial_velocity_max = 0.099999994
-gravity = Vector3(0, -12.62, 0)
+gravity = Vector3(0, 0, 0)
 scale_min = 0.5
 scale_max = 1.5
-turbulence_noise_scale = 3.0
+turbulence_enabled = true
+turbulence_noise_scale = 1.0
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ax72e"]
 transparency = 1
@@ -67,7 +68,7 @@ billboard_mode = 2
 
 [sub_resource type="QuadMesh" id="QuadMesh_ax72e"]
 material = SubResource("StandardMaterial3D_ax72e")
-size = Vector2(0.05, 0.295)
+size = Vector2(0.05, 0.05)
 
 [node name="World" type="Node3D"]
 
@@ -100,15 +101,12 @@ fov = 30.0
 size = 25.0
 
 [node name="Tuner" parent="." instance=ExtResource("2_fj7yv")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.3903091, 0)
-visible = false
 move_speed = 7.0
 
-[node name="PlacementManager" type="Node3D" parent="." node_paths=PackedStringArray("camera_rig", "visualizer")]
+[node name="PlacementManager" type="Node3D" parent="." node_paths=PackedStringArray("visualizer")]
 script = ExtResource("8_70437")
 base_cell_size = 0.5
 current_item = ExtResource("10_3f5lo")
-camera_rig = NodePath("../CameraRig")
 visualizer = NodePath("PlacementVistualizer")
 
 [node name="PlacementVistualizer" type="Node3D" parent="PlacementManager"]
@@ -137,7 +135,6 @@ sorting_offset = -1000.0
 texture = ExtResource("14_ax72e")
 
 [node name="AmbientParticles" type="GPUParticles3D" parent="."]
-visible = false
 amount = 500
 lifetime = 10.0
 speed_scale = 5.0

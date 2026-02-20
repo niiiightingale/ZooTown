@@ -1,6 +1,6 @@
 [gd_scene load_steps=6 format=3 uid="uid://cjj8lnfp6gtk2"]
 
-[ext_resource type="Script" uid="uid://bw1prweicu2g7" path="res://_Scripts/GlobalCursor.gd" id="1_25lnx"]
+[ext_resource type="Script" uid="uid://bw1prweicu2g7" path="res://_AutoLoad/GlobalCursor.gd" id="1_25lnx"]
 [ext_resource type="Texture2D" uid="uid://ccfabjvim8k6p" path="res://UI/Mouse_Hand.png" id="2_enxk0"]
 [ext_resource type="Script" uid="uid://dny15j820sm28" path="res://_Scripts/cursor_vistualizer.gd" id="3_cb8j5"]
 [ext_resource type="Texture2D" uid="uid://dddth08tcs8c8" path="res://UI/MOUSE.png" id="4_qpfmo"]

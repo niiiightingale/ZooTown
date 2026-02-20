@@ -2,8 +2,8 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cnqe0xd7cbnuq"
-path.s3tc="res://.godot/imported/Tile_Dirt.png-fa72af7bbe38e6885ba9efb8f453a02d.s3tc.ctex"
+uid="uid://dkgudus0ps4kt"
+path.s3tc="res://.godot/imported/Happy.png-5946836e4c30c793aff061d23c338057.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
@@ -11,8 +11,8 @@ metadata={
 
 [deps]
 
-source_file="res://SceneItems/Grounds_png/Tile_Dirt.png"
-dest_files=["res://.godot/imported/Tile_Dirt.png-fa72af7bbe38e6885ba9efb8f453a02d.s3tc.ctex"]
+source_file="res://Charactors_png/forest_charactor/Happy.png"
+dest_files=["res://.godot/imported/Happy.png-5946836e4c30c793aff061d23c338057.s3tc.ctex"]
 
 [params]
 

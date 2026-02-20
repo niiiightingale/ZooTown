@@ -2,8 +2,8 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dfdvblpbst365"
-path.s3tc="res://.godot/imported/Charactor_FoxLeader.png-46c31661a83c9650c2c85ae87d141ef8.s3tc.ctex"
+uid="uid://c7vnglmahw156"
+path.s3tc="res://.godot/imported/Run.png-4efddf873e4cb49991332dcc5ad285f0.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
@@ -11,8 +11,8 @@ metadata={
 
 [deps]
 
-source_file="res://Charactors_png/Charactor_FoxLeader.png"
-dest_files=["res://.godot/imported/Charactor_FoxLeader.png-46c31661a83c9650c2c85ae87d141ef8.s3tc.ctex"]
+source_file="res://Charactors_png/forest_charactor/Run.png"
+dest_files=["res://.godot/imported/Run.png-4efddf873e4cb49991332dcc5ad285f0.s3tc.ctex"]
 
 [params]
 

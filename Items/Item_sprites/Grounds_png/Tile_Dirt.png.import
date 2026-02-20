@@ -2,8 +2,8 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://wlom42y2abna"
-path.s3tc="res://.godot/imported/Tile_River.png-c1951d29ae62ff008abdad0238db93b0.s3tc.ctex"
+uid="uid://cnqe0xd7cbnuq"
+path.s3tc="res://.godot/imported/Tile_Dirt.png-24f8ffddad4d4bab81585370742be2e8.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
@@ -11,8 +11,8 @@ metadata={
 
 [deps]
 
-source_file="res://SceneItems/Grounds_png/Tile_River.png"
-dest_files=["res://.godot/imported/Tile_River.png-c1951d29ae62ff008abdad0238db93b0.s3tc.ctex"]
+source_file="res://Items/Item_sprites/Grounds_png/Tile_Dirt.png"
+dest_files=["res://.godot/imported/Tile_Dirt.png-24f8ffddad4d4bab81585370742be2e8.s3tc.ctex"]
 
 [params]
 

@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://bsm26dli1bv85"]
 
-[ext_resource type="Script" uid="uid://bieuel38b4rhc" path="res://_Scripts/destructible_component.gd" id="1_s3xfh"]
+[ext_resource type="Script" uid="uid://bieuel38b4rhc" path="res://Items/Item_Components/Item_Component_Scripts/destructible_component.gd" id="1_s3xfh"]
 
 [node name="DestructibleComponent" type="Node"]
 script = ExtResource("1_s3xfh")

@@ -1,4 +1,5 @@
 extends Node3D
+class_name PlacementManager
 
 @export_group("Grid System")
 @export var base_cell_size: float = 1.0 
@@ -8,150 +9,154 @@ extends Node3D
 		current_item = value
 		if is_node_ready():
 			_update_item_data()
-			_refresh_cursor() # 换物品时顺便换鼠标
+			# 如果玩家通过 UI 选中了新物品，自动帮他切到建造模式（符合直觉）
+			if current_item and GlobalState.current_mode != GlobalState.InteractionMode.BUILD:
+				set_mode(GlobalState.InteractionMode.BUILD)
 
 @export_group("References")
-# 记得把你的 CameraRig 节点拖进来，脚本类型要是 CameraRig
-@export var camera_rig: CameraRig             
 @export var visualizer: PlacementVisualizer 
 
-@export_group("Editor Tools")
-@export var delete_highlight_color: Color = Color(1.0, 0.2, 0.2, 1.0) 
-
-var is_building_mode: bool = true        
-var is_delete_mode: bool = false 
-
 var current_footprint_cells: Array[Vector2i] = [Vector2i(0, 0)]
-var hovered_object: Node3D = null 
 
 func _ready() -> void:
 	_update_item_data()
-	if is_building_mode:
+	# 🎯 核心修改：开局强制设定为“普通模式”！
+	# 无论 Inspector 里有没有默认物品，进游戏第一眼必须是 Normal 模式
+	set_mode(GlobalState.InteractionMode.NORMAL)
+
+func _process(_delta: float) -> void:
+	# ==========================================
+	# 1. 监听玩家的“模式切换意图”
+	# ==========================================
+	
+	# 🎯 新增：监听 B 键 (建造模式开关)
+	if Input.is_action_just_pressed("Build_Mode_Toggle"):
+		if GlobalState.current_mode == GlobalState.InteractionMode.BUILD:
+			set_mode(GlobalState.InteractionMode.NORMAL) # 再按一次退出建造
+		else:
+			set_mode(GlobalState.InteractionMode.BUILD)
+			
+	# 监听 X 键 (删除模式开关)
+	if Input.is_action_just_pressed("Delete_Mode_Toggle"): 
+		if GlobalState.current_mode == GlobalState.InteractionMode.DELETE:
+			set_mode(GlobalState.InteractionMode.NORMAL) 
+		else:
+			set_mode(GlobalState.InteractionMode.DELETE)
+			
+	# 监听 ESC 或右键 (取消一切特殊模式，清空双手)
+	if Input.is_action_just_pressed("ui_cancel"): 
+		current_item = null
+		set_mode(GlobalState.InteractionMode.NORMAL)
+
+	# ==========================================
+	# 2. 根据当前的全局状态，执行纯粹的业务逻辑
+	# ==========================================
+	match GlobalState.current_mode:
+		GlobalState.InteractionMode.BUILD:
+			_process_build_mode()
+		GlobalState.InteractionMode.DELETE:
+			_process_delete_mode()
+		GlobalState.InteractionMode.NORMAL:
+			_process_normal_mode()
+
+
+# === 统一发令枪：切换模式并广播 ===
+func set_mode(new_mode: GlobalState.InteractionMode) -> void:
+	GlobalState.current_mode = new_mode
+	
+	# 通知雷达：模式变了，快让当前指着的物体更新一下动画！
+	if MouseScanner.has_method("refresh_current_hover"):
+		MouseScanner.refresh_current_hover()
+	
+	# 切换 UI 鼠标指针
+	if new_mode == GlobalState.InteractionMode.BUILD:
 		GlobalCursor.set_cursor_state(CursorVisualizer.CursorState.BUILD)
+	elif new_mode == GlobalState.InteractionMode.DELETE:
+		GlobalCursor.set_cursor_state(CursorVisualizer.CursorState.DELETE)
+	else:
+		GlobalCursor.set_cursor_state(CursorVisualizer.CursorState.NORMAL)
+
+
+# ==========================================
+# 分支逻辑：建造 (网格吸附、显示虚影、放置)
+# ==========================================
+func _process_build_mode() -> void:
+	if not visualizer: return
+	
+	if MouseScanner.is_mouse_on_ground:
+		var snapped_pos = snap_to_grid(MouseScanner.ground_position)
+		var covered_cells = get_covered_cells(snapped_pos)
+		var is_terrain = current_item.is_terrain() if current_item else false
+		var can_place = is_placement_valid(covered_cells, is_terrain)
+		
+		# 只有在建造模式下，且手里有物品时，才显示地面的雷达和建造虚影
+		if current_item:
+			visualizer.update_radar(snapped_pos, MouseScanner.ground_position)
+			visualizer.update_build_preview(snapped_pos, can_place)
+		else:
+			visualizer.hide_all()
+		
+		if Input.is_action_just_pressed("left_mouse") and can_place and current_item:
+			place_item(snapped_pos, covered_cells)
+	else:
+		visualizer.hide_all()
+
+# ==========================================
+# 分支逻辑：删除 (只管砸)
+# ==========================================
+func _process_delete_mode() -> void:
+	if visualizer: visualizer.hide_all()
+	
+	var target = MouseScanner.hovered_object
+	
+	if Input.is_action_just_pressed("left_mouse") and target:
+		var comp = target.get_node_or_null("DestructibleComponent")
+		if comp:
+			comp.delete_instantly()
+		else:
+			target.queue_free()
+
+# ==========================================
+# 分支逻辑：普通互动
+# ==========================================
+func _process_normal_mode() -> void:
+	if visualizer: visualizer.hide_all()
+	
+	var target = MouseScanner.hovered_object
+	
+	if Input.is_action_just_pressed("left_mouse") and target:
+		print("触发普通互动！对象是：", target.name)
+
+
+# ==========================================
+# 辅助函数 (保持不变)
+# ==========================================
 func _update_item_data() -> void:
 	current_footprint_cells = [Vector2i(0, 0)] 
 	var sprite_clone: Sprite3D = null 
 	
 	if current_item and current_item.prefab:
 		var temp_instance = current_item.prefab.instantiate()
-		
 		var comp = temp_instance.get_node_or_null("FootprintComponent")
-		if comp:
+		if comp: 
 			current_footprint_cells = comp.occupied_cells.duplicate()
 			
 		for child in temp_instance.get_children():
 			if child is Sprite3D:
 				sprite_clone = child.duplicate()
-				break 
 				
+				# 🚀 核心修复：物理阉割！
+				# 把克隆出来的 Sprite3D 下面附带的所有 ClickArea 
+				# 和碰撞体全部抹杀，保证虚影绝对没有物理体积！
+				# ==========================================
+				for grandchild in sprite_clone.get_children():
+					grandchild.free()
+				break 
 		temp_instance.free() 
 	
 	if visualizer:
 		visualizer.set_item(current_item, current_footprint_cells, sprite_clone)
 
-func _process(_delta: float) -> void:
-	if Input.is_action_just_pressed("Delete_Mode_Toggle"): 
-		_toggle_delete_mode()
-
-	if not is_building_mode or not camera_rig or not visualizer:
-		if visualizer: visualizer.hide_all()
-		return
-	
-	var mouse_pos = get_viewport().get_mouse_position()
-	
-	if is_delete_mode:
-		# 🎯 饥荒流：删除模式下，直接用鼠标射线去摸物理碰撞体
-		if visualizer: visualizer.hide_all() # 隐藏地面的十字雷达
-		_handle_delete_mode_raycast(mouse_pos)
-		
-	else:
-		# 🧱 网格流：建造模式下，射线找地面计算落点
-		var cam = camera_rig.camera
-		var ground_plane = Plane(Vector3.UP, 0.0)
-		var ray_origin = cam.project_ray_origin(mouse_pos)
-		var intersection = ground_plane.intersects_ray(ray_origin, cam.project_ray_normal(mouse_pos))
-		
-		if intersection != null:
-			var snapped_pos = snap_to_grid(intersection)
-			visualizer.update_radar(snapped_pos, intersection)
-			if current_item:
-				_handle_build_mode(snapped_pos)
-		else:
-			if visualizer: visualizer.hide_all()
-
-# === 状态与光标管理 ===
-func _toggle_delete_mode() -> void:
-	is_delete_mode = !is_delete_mode
-	_reset_hovered_object() 
-	
-	if is_delete_mode:
-		# 🎯 核心修复：进入删除模式，强制隐藏建造虚影！
-		if visualizer: visualizer.hide_build_preview()
-		print("进入删除模式")
-	else:
-		print("回到建造模式")
-		
-	_refresh_cursor()
-
-# === 删除逻辑 ===
-# === 全新饥荒流点选逻辑 ===
-# === 全新饥荒流点选逻辑 ===
-func _handle_delete_mode_raycast(mouse_pos: Vector2) -> void:
-	var cam = camera_rig.camera
-	var from = cam.project_ray_origin(mouse_pos)
-	var to = from + cam.project_ray_normal(mouse_pos) * 1000.0
-	
-	var space_state = get_world_3d().direct_space_state
-	var query = PhysicsRayQueryParameters3D.create(from, to)
-	
-	# 🌟 设置检测层级为 2
-	query.collision_mask = 2 
-	
-	# 🌟 绝杀修复：强制射线检测 Area3D（引擎默认是 false）
-	query.collide_with_areas = true 
-	
-	var result = space_state.intersect_ray(query)
-	var target_node = null
-	
-	if result:
-		var hit_collider = result.collider
-		
-		var curr = hit_collider
-		while curr and curr != get_tree().root:
-			if curr.has_node("DestructibleComponent"):
-				target_node = curr
-				break
-			curr = curr.get_parent()
-			
-	if target_node != hovered_object:
-		_reset_hovered_object()
-		if target_node:
-			hovered_object = target_node
-			_tint_object(hovered_object, delete_highlight_color)
-	
-	if Input.is_action_just_pressed("left_mouse"):
-		if hovered_object:
-			var comp = hovered_object.get_node_or_null("DestructibleComponent")
-			if comp:
-				comp.delete_instantly()
-			else:
-				hovered_object.queue_free()
-			hovered_object = null
-
-# === 建造逻辑 ===
-func _handle_build_mode(snapped_pos: Vector3) -> void:
-	var covered_cells = get_covered_cells(snapped_pos)
-	var is_terrain = current_item.is_terrain()
-	var can_place = is_placement_valid(covered_cells, is_terrain)
-	
-	visualizer.update_build_preview(snapped_pos, can_place)
-	
-	if Input.is_action_just_pressed("left_mouse") or Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
-		if Input.is_action_just_pressed("left_mouse"):
-			if can_place:
-				place_item(snapped_pos, covered_cells)
-
-# === 辅助函数 ===
 func place_item(world_pos: Vector3, covered_cells: Array[Vector2i]) -> void:
 	if not current_item or not current_item.prefab: return
 	var is_terrain = current_item.is_terrain()
@@ -161,15 +166,14 @@ func place_item(world_pos: Vector3, covered_cells: Array[Vector2i]) -> void:
 	if is_terrain:
 		var height = (current_item.terrain_rank * 0.01) + randf_range(0.0, 0.005)
 		new_instance.global_position = Vector3(world_pos.x, height, world_pos.z)
-		new_instance.rotation_degrees.y = [0, 90, 180, 270].pick_random()
+		new_instance.rotation_degrees.y = [0, 90, 180, 270].pick_random() # 保持你的地块旋转逻辑
 	else:
 		new_instance.global_position = Vector3(world_pos.x, 0.0, world_pos.z)
 
 	WorldManager.register_item(covered_cells, new_instance, is_terrain)
 
 	var destructible = new_instance.get_node_or_null("DestructibleComponent")
-	if destructible:
-		# 🎯 修复：传入两个参数，确保组件知道自己是啥
+	if destructible: 
 		destructible.setup(covered_cells, is_terrain)
 
 func snap_to_grid(pos: Vector3) -> Vector3:
@@ -186,32 +190,6 @@ func get_covered_cells(snapped_pos: Vector3) -> Array[Vector2i]:
 
 func is_placement_valid(covered_cells: Array[Vector2i], is_terrain: bool) -> bool:
 	for cell in covered_cells:
-		if WorldManager.is_cell_occupied(cell, is_terrain):
+		if WorldManager.is_cell_occupied(cell, is_terrain): 
 			return false 
 	return true
-
-func _tint_object(node: Node3D, color: Color) -> void:
-	if "modulate" in node:
-		node.modulate = color
-	else:
-		for child in node.get_children():
-			if child is Sprite3D or child is AnimatedSprite3D:
-				child.modulate = color
-
-func _reset_hovered_object() -> void:
-	if hovered_object and is_instance_valid(hovered_object):
-		_tint_object(hovered_object, Color.WHITE)
-	hovered_object = null
-	
-func _refresh_cursor() -> void:
-	
-	if is_delete_mode:
-		# 假设你在 CameraVisualizer 里定义了 DELETE 状态
-		GlobalCursor.set_cursor_state(CursorVisualizer.CursorState.DELETE)
-		print("Delete")
-	else:
-		if current_item:
-			GlobalCursor.set_cursor_state(CursorVisualizer.CursorState.BUILD)
-			print("BUILD")
-		else:
-			GlobalCursor.set_cursor_state(CursorVisualizer.CursorState.NORMAL)

@@ -1,54 +1,71 @@
 extends CharacterBody3D
 
-# --- 配置 ---
-@export var move_speed = 15.0
+@export var move_speed: float = 5.0
 
-# --- 引用 ---
-@onready var sprite = $Sprite3D
+# 🎯 改动1：直接获取你的 AnimatedSprite3D 节点
+@onready var anim_sprite = $AnimatedSprite3D
 
-func _physics_process(_delta):
-	# 只需要处理移动，其他都交给 CameraRig 了
-	update_movement()
-	move_and_slide()
+var is_acting: bool = false 
 
-func update_movement():
-	var input_vector = Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down")
-	var move_dir = get_cam_relative_dir(input_vector)
+func _physics_process(_delta: float) -> void:
+	if is_acting:
+		velocity.x = move_toward(velocity.x, 0, move_speed)
+		velocity.z = move_toward(velocity.z, 0, move_speed)
+		move_and_slide()
+		return
+
+	velocity.y = 0 
+	
+	var input_dir = Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down")
+	var move_dir = Vector3.ZERO
+	
+	var camera = get_viewport().get_camera_3d()
+	if camera and input_dir != Vector2.ZERO:
+		var cam_basis = camera.global_transform.basis
+		var cam_fwd = -cam_basis.z
+		cam_fwd.y = 0 
+		cam_fwd = cam_fwd.normalized()
+		
+		var cam_right = cam_basis.x
+		cam_right.y = 0
+		cam_right = cam_right.normalized()
+		
+		move_dir = (cam_right * input_dir.x + cam_fwd * -input_dir.y).normalized()
 	
 	if move_dir:
-		# 应用速度
 		velocity.x = move_dir.x * move_speed
 		velocity.z = move_dir.z * move_speed
-		
-		# 视觉翻转逻辑
-		var cam = get_viewport().get_camera_3d()
-		if cam:
-			# 这里为了翻转逻辑，还是得算一下右向量
-			var view_vec = (self.global_position - cam.global_position)
-			view_vec.y = 0
-			var forward = view_vec.normalized()
-			var right = forward.cross(Vector3.UP).normalized()
-			
-			# 调用翻转函数
-			if sprite:
-				var dot = move_dir.dot(right)
-				if dot < -0.1: sprite.flip_h = true
-				elif dot > 0.1: sprite.flip_h = false
 	else:
-		# 停止摩擦
 		velocity.x = move_toward(velocity.x, 0, move_speed)
 		velocity.z = move_toward(velocity.z, 0, move_speed)
 
-# 工具函数：获取相对于当前激活相机的移动方向
-func get_cam_relative_dir(input_vec: Vector2) -> Vector3:
-	var cam = get_viewport().get_camera_3d()
-	if input_vec.length() == 0 or not cam:
-		return Vector3(input_vec.x, 0, input_vec.y).normalized()
+	move_and_slide()
+	_update_animation(input_dir)
+
+# ==========================================
+# 🎬 动画与翻转逻辑中心 (针对 AnimatedSprite3D)
+# ==========================================
+func _update_animation(input_dir: Vector2) -> void:
+	if input_dir == Vector2.ZERO:
+		# 🎯 改动2：直接让 anim_sprite 播放
+		anim_sprite.play("idle")
+	else:
+		anim_sprite.play("walk")
+		
+		# 左右翻转逻辑不变，AnimatedSprite3D 也有 flip_h 属性
+		if input_dir.x < 0: 
+			anim_sprite.flip_h = true  
+		elif input_dir.x > 0:
+			anim_sprite.flip_h = false 
+
+# ==========================================
+# 🌟 对外暴露的特殊动作接口
+# ==========================================
+func play_happy() -> void:
+	is_acting = true
+	anim_sprite.play("happy")
 	
-	var view_vector = self.global_position - cam.global_position
-	view_vector.y = 0
-	var forward_dir = view_vector.normalized()
-	var right_dir = forward_dir.cross(Vector3.UP).normalized()
+	# 🎯 改动3：等待 AnimatedSprite3D 的动画完成信号
+	await anim_sprite.animation_finished
 	
-	# W前，S后，A左，D右
-	return (right_dir * input_vec.x + forward_dir * -input_vec.y).normalized()
+	is_acting = false
