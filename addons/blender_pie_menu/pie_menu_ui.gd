@@ -8,8 +8,8 @@ const RADIUS: float = 110.0
 const DEADZONE: float = 25.0     
 
 var slice_labels = [
-	"右视图 (Right)", "查看所选 (Focus)", "底视图 (Bottom)", "摄像机视角 (Camera)",
-	"左视图 (Left)", "前视图 (Front)", "顶视图 (Top)", "后视图 (Back)"
+	"右视图", "查看所选", "底视图", "摄像机视角",
+	"左视图", "前视图", "顶视图", "后视图"
 ]
 
 var current_hover_index: int = -1
@@ -74,19 +74,16 @@ func _create_button_node(text: String) -> PanelContainer:
 # 🕹️ 外部调用接口
 # ==========================================
 func open_menu() -> void:
+	show() 
 	center_pos = get_local_mouse_position()
 	current_hover_index = -1
 	_layout_buttons()
 	_update_button_styles()
-	show()
 
 func close_menu() -> void:
 	hide()
 	if current_hover_index != -1:
 		_execute_action(current_hover_index)
-
-# ==========================================
-# 🔄 实时高亮与布局
 # ==========================================
 func _process(_delta: float) -> void:
 	if not visible: return
@@ -172,8 +169,11 @@ func _break_axis_lock() -> void:
 	mb.position = get_global_mouse_position()
 	mb.pressed = true
 	Input.parse_input_event(mb)
-	mb.pressed = false
-	Input.parse_input_event(mb)
+	
+	# 🌟 唯一改动：克隆一个新的事件对象来发送“松开”指令，消除警告
+	var mb_up = mb.duplicate()
+	mb_up.pressed = false
+	Input.parse_input_event(mb_up)
 
 func _toggle_camera_preview() -> void:
 	var target_cam: Camera3D = null

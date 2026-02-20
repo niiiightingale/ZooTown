@@ -50,7 +50,6 @@ func _update_item_data() -> void:
 		visualizer.set_item(current_item, current_footprint_cells, sprite_clone)
 
 func _process(_delta: float) -> void:
-	# 监听 X 键 (请在项目设置里配好 Delete_Mode_Toggle)
 	if Input.is_action_just_pressed("Delete_Mode_Toggle"): 
 		_toggle_delete_mode()
 
@@ -58,26 +57,27 @@ func _process(_delta: float) -> void:
 		if visualizer: visualizer.hide_all()
 		return
 	
-	# 我们直接拿 Viewport 的真鼠标位置就行了！不用经过任何中转。
 	var mouse_pos = get_viewport().get_mouse_position()
-	var cam = camera_rig.camera
-	var ground_plane = Plane(Vector3.UP, 0.0)
-	var ray_origin = cam.project_ray_origin(mouse_pos)
-	var intersection = ground_plane.intersects_ray(ray_origin, cam.project_ray_normal(mouse_pos))
 	
-	if intersection != null:
-		var snapped_pos = snap_to_grid(intersection)
+	if is_delete_mode:
+		# 🎯 饥荒流：删除模式下，直接用鼠标射线去摸物理碰撞体
+		if visualizer: visualizer.hide_all() # 隐藏地面的十字雷达
+		_handle_delete_mode_raycast(mouse_pos)
 		
-		# 1. 雷达常驻
-		visualizer.update_radar(snapped_pos, intersection)
-		
-		# 2. 分支逻辑
-		if is_delete_mode:
-			_handle_delete_mode(snapped_pos)
-		elif current_item:
-			_handle_build_mode(snapped_pos)
 	else:
-		if visualizer: visualizer.hide_all()
+		# 🧱 网格流：建造模式下，射线找地面计算落点
+		var cam = camera_rig.camera
+		var ground_plane = Plane(Vector3.UP, 0.0)
+		var ray_origin = cam.project_ray_origin(mouse_pos)
+		var intersection = ground_plane.intersects_ray(ray_origin, cam.project_ray_normal(mouse_pos))
+		
+		if intersection != null:
+			var snapped_pos = snap_to_grid(intersection)
+			visualizer.update_radar(snapped_pos, intersection)
+			if current_item:
+				_handle_build_mode(snapped_pos)
+		else:
+			if visualizer: visualizer.hide_all()
 
 # === 状态与光标管理 ===
 func _toggle_delete_mode() -> void:
@@ -94,24 +94,43 @@ func _toggle_delete_mode() -> void:
 	_refresh_cursor()
 
 # === 删除逻辑 ===
-func _handle_delete_mode(snapped_pos: Vector3) -> void:
-	var cell = Vector2i(round(snapped_pos.x / base_cell_size), round(snapped_pos.z / base_cell_size))
+# === 全新饥荒流点选逻辑 ===
+# === 全新饥荒流点选逻辑 ===
+func _handle_delete_mode_raycast(mouse_pos: Vector2) -> void:
+	var cam = camera_rig.camera
+	var from = cam.project_ray_origin(mouse_pos)
+	var to = from + cam.project_ray_normal(mouse_pos) * 1000.0
 	
-	# 索敌 (剥洋葱)
-	var target_node = WorldManager.get_node_at_cell(cell, false)
-	if target_node == null:
-		target_node = WorldManager.get_node_at_cell(cell, true)
+	var space_state = get_world_3d().direct_space_state
+	var query = PhysicsRayQueryParameters3D.create(from, to)
 	
-	# 高亮
+	# 🌟 设置检测层级为 2
+	query.collision_mask = 2 
+	
+	# 🌟 绝杀修复：强制射线检测 Area3D（引擎默认是 false）
+	query.collide_with_areas = true 
+	
+	var result = space_state.intersect_ray(query)
+	var target_node = null
+	
+	if result:
+		var hit_collider = result.collider
+		
+		var curr = hit_collider
+		while curr and curr != get_tree().root:
+			if curr.has_node("DestructibleComponent"):
+				target_node = curr
+				break
+			curr = curr.get_parent()
+			
 	if target_node != hovered_object:
 		_reset_hovered_object()
 		if target_node:
 			hovered_object = target_node
 			_tint_object(hovered_object, delete_highlight_color)
 	
-	# 删除
 	if Input.is_action_just_pressed("left_mouse"):
-		if Input.is_action_just_pressed("left_mouse") and hovered_object:
+		if hovered_object:
 			var comp = hovered_object.get_node_or_null("DestructibleComponent")
 			if comp:
 				comp.delete_instantly()

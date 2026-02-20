@@ -2,11 +2,9 @@
 
 [ext_resource type="Texture2D" uid="uid://db0bti1p64pwb" path="res://Items/Item_sprites/Grass_01.tres" id="1_wamfr"]
 [ext_resource type="PackedScene" uid="uid://c130slvteas1p" path="res://Items/Item_Components/FootprintComponent.tscn" id="2_m0hqt"]
+[ext_resource type="Script" uid="uid://bmy4c1kfkpa61" path="res://Items/Item_tscn/click_area.gd" id="3_nu1nb"]
 [ext_resource type="PackedScene" uid="uid://bsm26dli1bv85" path="res://Items/Item_Components/DestructibleComponent.tscn" id="3_ojjoc"]
 [ext_resource type="PackedScene" uid="uid://dlh3rdmhm5iya" path="res://Items/Item_Components/TweenComponent.tscn" id="4_agamn"]
-
-[sub_resource type="CylinderShape3D" id="CylinderShape3D_agamn"]
-height = 1.3056641
 
 [node name="Grass" type="Node3D"]
 
@@ -21,12 +19,16 @@ footprint_map = "XXX
 XOX
 XXX"
 
+[node name="ClickArea" type="Area3D" parent="."]
+transform = Transform3D(0.69769347, 0, 0, 0, 0.69769347, 0, 0, 0, 0.69769347, 0, 0.688452, 0.06640887)
+collision_layer = 2
+collision_mask = 0
+script = ExtResource("3_nu1nb")
+
+[node name="CollisionShape3D" type="CollisionPolygon3D" parent="ClickArea"]
+depth = 0.09
+polygon = PackedVector2Array(-0.41615647, 0.70324916, -0.22310244, 0.7216353, -0.17100866, 0.58986837, -0.115850486, 0.5990613, -0.054563493, 0.6879274, 0.049624212, 0.7063133, 0.18751991, 0.7859865, 0.31622237, 0.74614996, 0.33154392, 0.666477, 0.47863284, 0.70324916, 0.54298425, 0.5990613, 0.5215339, 0.47342318, 0.61039954, 0.37536412, 0.62572145, 0.15779549, 0.5276624, -0.37846512, 0.6441075, -0.2742774, 0.7268451, -0.31104952, 0.7329736, -0.57764775, 0.6165284, -0.7737659, 0.46943977, -0.7308651, 0.33767274, -0.7002216, -0.6858189, -0.7431224, -0.7501701, -0.42443043, -0.6674328, -0.3539505, -0.58775985, -0.34475732, -0.5387303, -0.30185658, -0.7685564, 0.25891882, -0.73484844, 0.4887449, -0.61227477, 0.5530961, -0.5264728, 0.53471, -0.48970076, 0.356978, -0.45905736, 0.66341263)
+
 [node name="DestructibleComponent" parent="." instance=ExtResource("3_ojjoc")]
 
 [node name="TweenComponent" parent="." instance=ExtResource("4_agamn")]
-
-[node name="Area3D" type="Area3D" parent="."]
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.028808594, 0.49958026, -0.11859131)
-shape = SubResource("CylinderShape3D_agamn")

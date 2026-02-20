@@ -4,7 +4,7 @@
 [ext_resource type="Script" uid="uid://dtaeeqodl3s65" path="res://_Scripts/pause_menu.gd" id="1_05041"]
 [ext_resource type="FontFile" uid="uid://bc22oq1eh6oex" path="res://Fonts/OMORI_GAME2.ttf" id="2_05041"]
 [ext_resource type="Texture2D" uid="uid://7wvpka3unbum" path="res://UI/Button_Save.tres" id="3_70kav"]
-[ext_resource type="Script" uid="uid://yyh5lcc13ee1" path="res://_Scenes/bouncy_button.gd" id="3_ndvoi"]
+[ext_resource type="Script" uid="uid://yyh5lcc13ee1" path="res://_Scripts/bouncy_button.gd" id="3_ndvoi"]
 [ext_resource type="Texture2D" uid="uid://0gk6fr118ufx" path="res://UI/Button_Settings.tres" id="4_ndvoi"]
 [ext_resource type="Texture2D" uid="uid://kdpset5gcebm" path="res://UI/Button_Exit.tres" id="5_apq4p"]
 

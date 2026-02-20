@@ -18,17 +18,17 @@ func _exit_tree() -> void:
 
 # 🌟 在这里监听全局按键，优先级更高
 func _input(event: InputEvent) -> void:
-	# 只有在 3D 编辑界面才生效
 	if not pie_ui or not pie_ui.get_parent().is_visible_in_tree():
 		return
 
 	if event is InputEventKey and event.keycode == KEY_QUOTELEFT:
 		if event.pressed and not event.is_echo():
-			# 只要鼠标在 3D 区域内，就强制呼出
-			var mouse_pos = pie_ui.get_global_mouse_position()
-			if pie_ui.get_parent().get_global_rect().has_point(mouse_pos):
+			# 🎯 修复点 1：向永远可见的“父节点”索要鼠标坐标，绝不出错！
+			var parent = pie_ui.get_parent()
+			var mouse_pos = parent.get_global_mouse_position()
+			
+			if parent.get_global_rect().has_point(mouse_pos):
 				pie_ui.open_menu()
-				# 告诉编辑器，这个按键已经被我处理了，不要乱动
 				get_viewport().set_input_as_handled() 
 				
 		elif not event.pressed and pie_ui.visible:

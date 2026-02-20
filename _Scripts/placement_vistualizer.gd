@@ -41,15 +41,31 @@ func _init_point_cloud_radar() -> void:
 	add_child(points_multimesh)
 
 func set_item(item: ItemData, footprint_cells: Array[Vector2i], cloned_sprite: Sprite3D = null) -> void:
-	for child in footprint_root.get_children(): child.queue_free()
-	var plane_mesh = PlaneMesh.new()
-	plane_mesh.size = Vector2(base_cell_size * 0.95, base_cell_size * 0.95)
-	for offset in footprint_cells:
-		var mi = MeshInstance3D.new()
-		mi.mesh = plane_mesh
-		mi.material_override = decal_material
-		mi.position = Vector3(offset.x * base_cell_size, 0.02, offset.y * base_cell_size)
-		footprint_root.add_child(mi)
+	# 1. 清空之前的节点
+	for child in footprint_root.get_children(): 
+		child.queue_free()
+		
+	# 🎯 2. 核心修改：不再遍历 footprint_cells，而是直接在中心画一个十字
+	var cross_length = base_cell_size * 0.8  # 十字的长度（占格子的 80%）
+	var cross_thickness = base_cell_size * 0.4 # 十字的粗细
+	
+	# 横向矩形
+	var h_mesh = PlaneMesh.new()
+	h_mesh.size = Vector2(cross_length, cross_thickness)
+	var h_mi = MeshInstance3D.new()
+	h_mi.mesh = h_mesh
+	h_mi.material_override = decal_material
+	h_mi.position = Vector3(0, 0.02, 0)
+	footprint_root.add_child(h_mi)
+	
+	# 纵向矩形
+	var v_mesh = PlaneMesh.new()
+	v_mesh.size = Vector2(cross_thickness, cross_length)
+	var v_mi = MeshInstance3D.new()
+	v_mi.mesh = v_mesh
+	v_mi.material_override = decal_material
+	v_mi.position = Vector3(0, 0.02, 0)
+	footprint_root.add_child(v_mi)
 
 	if preview_sprite and is_instance_valid(preview_sprite):
 		preview_sprite.queue_free()
