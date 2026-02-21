@@ -10,6 +10,7 @@
 [ext_resource type="Resource" uid="uid://diuugi04stlg0" path="res://ItemTres/Grass_01.tres" id="10_3f5lo"]
 [ext_resource type="FontFile" uid="uid://bc22oq1eh6oex" path="res://Fonts/OMORI_GAME2.ttf" id="10_mtdta"]
 [ext_resource type="Script" uid="uid://b1qcvhaby4d72" path="res://_Scripts/terrain_manager.gd" id="12_l3g8g"]
+[ext_resource type="Script" uid="uid://dfk5ko8makd4v" path="res://_Scripts/terrain_data.gd" id="13_bhsij"]
 [ext_resource type="Resource" uid="uid://bk55bw1luadqe" path="res://TerrainAssets/Tile_Grass.tres" id="14_36pcp"]
 [ext_resource type="Texture2D" uid="uid://b4fm2ftvrfv0b" path="res://Items/Item_sprites/Land_Tex.png" id="14_ax72e"]
 [ext_resource type="Script" uid="uid://bqiqeg5823ula" path="res://_Scripts/grid_visualizer.gd" id="14_bhsij"]
@@ -154,7 +155,7 @@ draw_pass_1 = SubResource("TextMesh_q1qo6")
 
 [node name="TerrainManager" type="Node3D" parent="." unique_id=1486329107]
 script = ExtResource("12_l3g8g")
-terrain_resources = [ExtResource("14_dck4s"), ExtResource("14_36pcp"), ExtResource("16_26hrr")]
+terrain_resources = Array[ExtResource("13_bhsij")]([ExtResource("14_dck4s"), ExtResource("14_36pcp"), ExtResource("16_26hrr")])
 
 [node name="GridVisualizer" type="Node3D" parent="TerrainManager" unique_id=1363351522]
 visible = false

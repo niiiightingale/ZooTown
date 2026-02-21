@@ -1,12 +1,16 @@
 extends CharacterBody3D
-
 @export var move_speed: float = 5.0
 
 # 🎯 改动1：直接获取你的 AnimatedSprite3D 节点
 @onready var anim_sprite = $AnimatedSprite3D
 
 var is_acting: bool = false 
+var is_debug_mode: bool = false
 
+
+func _process(_delta: float) -> void:
+	_check_debug_toggle()
+	
 func _physics_process(_delta: float) -> void:
 	if is_acting:
 		velocity.x = move_toward(velocity.x, 0, move_speed)
@@ -69,3 +73,22 @@ func play_happy() -> void:
 	await anim_sprite.animation_finished
 	
 	is_acting = false
+
+func _check_debug_toggle() -> void:
+	# 🎯 必须用 just_pressed，确保按下去的那一瞬间只触发一次
+	if Input.is_action_just_pressed("Debug"):
+		# 状态翻转：true 变 false，false 变 true
+		is_debug_mode = !is_debug_mode
+		
+		# 触发具体的 Debug 表现
+		if is_debug_mode:
+			print("🛠️ Debug 模式：已开启！")
+			# Godot 4 的隐藏神技：用代码强制开启物理碰撞显示！
+			get_viewport().debug_draw = Viewport.DEBUG_DRAW_WIREFRAME
+		else:
+			print("✅ Debug 模式：已关闭！")
+			# 再次按下时，用代码关闭物理碰撞显示
+			get_viewport().debug_draw = Viewport.DEBUG_DRAW_DISABLED
+			
+		# 未来你还可以往这里塞更多东西：
+		# 比如显示 FPS、让主角无敌、开启上帝飞行视角等

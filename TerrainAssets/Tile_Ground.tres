@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="TerrainData" format=3 uid="uid://bw04ep2mng4r8"]
+
+[ext_resource type="Texture2D" uid="uid://c46lw7f4608ci" path="res://TerrainAssets/Tile_Grass_1.png" id="1_gureq"]
+[ext_resource type="Texture2D" uid="uid://bkq7126hxl0bf" path="res://TerrainAssets/Tile_Grass_Mask2.png" id="2_lngbu"]
+[ext_resource type="AudioStream" uid="uid://c1slwdcj52sua" path="res://TerrainAssets/ItemPlaceSound.wav" id="3_u54r1"]
+[ext_resource type="Script" uid="uid://dfk5ko8makd4v" path="res://_Scripts/terrain_data.gd" id="4_61wsm"]
+[ext_resource type="Texture2D" uid="uid://dxudifc7e7dii" path="res://TerrainAssets/Tile_Grass_mask1.png" id="5_vpxm1"]
+
+[resource]
+script = ExtResource("4_61wsm")
+id = "ground"
+border_texture = ExtResource("1_gureq")
+texture = ExtResource("5_vpxm1")
+use_world_space_texture = true
+fill_texture = ExtResource("2_lngbu")
+fill_scale = 0.02
+place_sound = ExtResource("3_u54r1")
+metadata/_custom_type_script = "uid://dfk5ko8makd4v"
