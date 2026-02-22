@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://dlh3rdmhm5iya"]
+
+[ext_resource type="Script" uid="uid://bgkk156aeta0u" path="res://Items/ItemComponents/TweenComponent/tween_component.gd" id="1_8v8me"]
+
+[node name="TweenComponent" type="Node"]
+script = ExtResource("1_8v8me")

@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="TerrainData" format=3 uid="uid://bw04ep2mng4r8"]
+
+[ext_resource type="Texture2D" uid="uid://c46lw7f4608ci" path="res://Items/Terrains/Base_board.png" id="1_hpl5e"]
+[ext_resource type="Texture2D" uid="uid://bkq7126hxl0bf" path="res://Items/Terrains/Tiles/Tile_Grass_Mask2.png" id="2_otws6"]
+[ext_resource type="AudioStream" uid="uid://c1slwdcj52sua" path="res://Items/Terrains/Tiles/ItemPlaceSound.wav" id="3_dunn0"]
+[ext_resource type="Script" uid="uid://dfk5ko8makd4v" path="res://GameManagers/TerrainManager/Scripts/terrain_data.gd" id="4_lsca5"]
+[ext_resource type="Texture2D" uid="uid://dxudifc7e7dii" path="res://Items/Terrains/Base_mask.png" id="5_rsqa7"]
+
+[resource]
+script = ExtResource("4_lsca5")
+id = "ground"
+border_texture = ExtResource("1_hpl5e")
+texture = ExtResource("5_rsqa7")
+use_world_space_texture = true
+fill_texture = ExtResource("2_otws6")
+fill_scale = 0.02
+place_sound = ExtResource("3_dunn0")
+metadata/_custom_type_script = "uid://dfk5ko8makd4v"

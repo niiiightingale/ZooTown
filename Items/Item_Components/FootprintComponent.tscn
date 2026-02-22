@@ -1,9 +1,0 @@
-[gd_scene load_steps=2 format=3 uid="uid://c130slvteas1p"]
-
-[ext_resource type="Script" uid="uid://cx414kbempiei" path="res://Items/Item_Components/Item_Component_Scripts/footprint_component.gd" id="1_0ngxs"]
-
-[node name="FootprintComponent" type="Node3D"]
-script = ExtResource("1_0ngxs")
-footprint_map = " X
-XOX
- X"

@@ -1,0 +1,126 @@
+[gd_scene format=3 uid="uid://cbs3s3ialsn3b"]
+
+[ext_resource type="Texture2D" uid="uid://d3u81oxtkbre6" path="res://UI/PauseMenu/Button_Continue.tres" id="1_7yioy"]
+[ext_resource type="Script" uid="uid://dtaeeqodl3s65" path="res://UI/PauseMenu/pause_menu.gd" id="1_05041"]
+[ext_resource type="FontFile" uid="uid://bc22oq1eh6oex" path="res://Fonts/OMORI_GAME2.ttf" id="2_05041"]
+[ext_resource type="Texture2D" uid="uid://7wvpka3unbum" path="res://UI/PauseMenu/Button_Save.tres" id="3_70kav"]
+[ext_resource type="Script" uid="uid://yyh5lcc13ee1" path="res://UI/bouncy_button.gd" id="3_ndvoi"]
+[ext_resource type="Texture2D" uid="uid://0gk6fr118ufx" path="res://UI/PauseMenu/Button_Settings.tres" id="4_ndvoi"]
+[ext_resource type="Texture2D" uid="uid://kdpset5gcebm" path="res://UI/PauseMenu/Button_Exit.tres" id="5_apq4p"]
+
+[node name="PauseMenu" type="CanvasLayer" unique_id=135260095]
+process_mode = 3
+layer = 100
+script = ExtResource("1_05041")
+
+[node name="ColorRect" type="ColorRect" parent="." unique_id=1376994140]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(1280, 720)
+mouse_filter = 2
+color = Color(0, 0, 0, 0.6156863)
+
+[node name="CenterContainer" type="CenterContainer" parent="." unique_id=1508354253]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.7, 0.7)
+pivot_offset = Vector2(1280, 720)
+
+[node name="MenuLayout" type="VBoxContainer" parent="CenterContainer" unique_id=1046194741]
+layout_mode = 2
+theme_override_constants/separation = 24
+alignment = 1
+
+[node name="Btn_Continue" type="TextureButton" parent="CenterContainer/MenuLayout" unique_id=5249034]
+layout_mode = 2
+texture_normal = ExtResource("1_7yioy")
+script = ExtResource("3_ndvoi")
+
+[node name="Label" type="Label" parent="CenterContainer/MenuLayout/Btn_Continue" unique_id=14296218]
+layout_mode = 0
+offset_left = 92.0
+offset_top = 23.0
+offset_right = 860.0
+offset_bottom = 265.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("2_05041")
+theme_override_font_sizes/font_size = 230
+text = "Continue"
+horizontal_alignment = 1
+vertical_alignment = 1
+uppercase = true
+
+[node name="MiddleRow" type="HBoxContainer" parent="CenterContainer/MenuLayout" unique_id=1356101073]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_constants/separation = 65
+
+[node name="Btn_Save" type="TextureButton" parent="CenterContainer/MenuLayout/MiddleRow" unique_id=1979184994]
+layout_mode = 2
+size_flags_vertical = 8
+texture_normal = ExtResource("3_70kav")
+script = ExtResource("3_ndvoi")
+
+[node name="Label" type="Label" parent="CenterContainer/MenuLayout/MiddleRow/Btn_Save" unique_id=1769595708]
+layout_mode = 0
+offset_left = 16.0
+offset_top = 51.0
+offset_right = 408.0
+offset_bottom = 293.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("2_05041")
+theme_override_font_sizes/font_size = 175
+text = "Save"
+horizontal_alignment = 1
+vertical_alignment = 1
+uppercase = true
+
+[node name="Btn_Settings" type="TextureButton" parent="CenterContainer/MenuLayout/MiddleRow" unique_id=271190501]
+layout_mode = 2
+size_flags_vertical = 8
+texture_normal = ExtResource("4_ndvoi")
+script = ExtResource("3_ndvoi")
+
+[node name="Label" type="Label" parent="CenterContainer/MenuLayout/MiddleRow/Btn_Settings" unique_id=1400856620]
+layout_mode = 0
+offset_left = 22.0
+offset_top = 109.0
+offset_right = 402.0
+offset_bottom = 351.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("2_05041")
+theme_override_font_sizes/font_size = 175
+text = "SEts"
+horizontal_alignment = 1
+vertical_alignment = 1
+uppercase = true
+
+[node name="ReferenceRect" type="ReferenceRect" parent="CenterContainer/MenuLayout" unique_id=1240814590]
+custom_minimum_size = Vector2(0, 17.38)
+layout_mode = 2
+border_color = Color(1, 0, 0, 0)
+
+[node name="Btn_Leave" type="TextureButton" parent="CenterContainer/MenuLayout" unique_id=1892217911]
+layout_mode = 2
+texture_normal = ExtResource("5_apq4p")
+script = ExtResource("3_ndvoi")
+
+[node name="Label" type="Label" parent="CenterContainer/MenuLayout/Btn_Leave" unique_id=1946640782]
+layout_mode = 0
+offset_left = 113.0
+offset_top = 25.0
+offset_right = 828.0
+offset_bottom = 267.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("2_05041")
+theme_override_font_sizes/font_size = 175
+text = "Leave Game"
+horizontal_alignment = 1
+vertical_alignment = 1
+uppercase = true

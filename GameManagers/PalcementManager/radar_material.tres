@@ -1,0 +1,11 @@
+[gd_resource type="ShaderMaterial" format=3 uid="uid://ci1oxqj42gkrt"]
+
+[ext_resource type="Shader" uid="uid://c2bfcu85nrpuf" path="res://GameManagers/PalcementManager/intersection_point.gdshader" id="1_cr0f0"]
+
+[resource]
+render_priority = 0
+shader = ExtResource("1_cr0f0")
+shader_parameter/valid_color = Color(0.5377861, 1, 0.50600374, 0.8)
+shader_parameter/invalid_color = Color(1, 0.101960786, 0.101960786, 0.6039216)
+shader_parameter/line_thickness = 0.050000002375
+shader_parameter/line_length = 0.35000001592648

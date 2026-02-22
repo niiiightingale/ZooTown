@@ -1,0 +1,208 @@
+[gd_scene format=3 uid="uid://c4snf3dht4d76"]
+
+[ext_resource type="Texture2D" uid="uid://b8tw7dnq5bkfm" path="res://UI/BuildUI/art/BuildUI_Base.tres" id="1_i086g"]
+[ext_resource type="Script" uid="uid://d4ihkmjamh0vo" path="res://UI/BuildUI/build_ui.gd" id="1_w8of4"]
+[ext_resource type="Texture2D" uid="uid://cbau1n1vc372a" path="res://UI/BuildUI/art/Vegetation_icon.tres" id="2_06ngr"]
+[ext_resource type="PackedScene" uid="uid://cjagd04s7k23v" path="res://UI/BuildUI/grid_button.tscn" id="2_k3bvd"]
+[ext_resource type="Texture2D" uid="uid://cx7htsrymq45c" path="res://UI/BuildUI/art/Decoration_icon.tres" id="3_rb5gs"]
+[ext_resource type="Texture2D" uid="uid://b4kdcs7ctfrtf" path="res://UI/BuildUI/art/Building_icon.tres" id="4_w8of4"]
+[ext_resource type="Texture2D" uid="uid://dbsbm76sfq3v2" path="res://UI/BuildUI/art/Terrain_icon.tres" id="5_k3bvd"]
+[ext_resource type="Texture2D" uid="uid://de004kpxoag7f" path="res://UI/BuildUI/art/Hammer_icon.tres" id="6_1s5mq"]
+[ext_resource type="Texture2D" uid="uid://beajdrf46unm3" path="res://UI/BuildUI/art/Shovel_icon.tres" id="7_osxqn"]
+
+[node name="BuildUI" type="Control" unique_id=1144917087]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+script = ExtResource("1_w8of4")
+grid_button_scene = ExtResource("2_k3bvd")
+drawer_closed_x = -1000.0
+drawer_open_x = 350.0
+
+[node name="LeftMenu" type="VBoxContainer" parent="." unique_id=816623298]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = 100.0
+offset_top = -170.0
+offset_right = 246.0
+offset_bottom = 587.0005
+grow_vertical = 2
+pivot_offset = Vector2(0, 378)
+theme_override_constants/separation = 55
+
+[node name="Btn_Vegetation" type="Button" parent="LeftMenu" unique_id=883274717]
+layout_mode = 2
+icon = ExtResource("1_i086g")
+
+[node name="TextureRect" type="TextureRect" parent="LeftMenu/Btn_Vegetation" unique_id=808013174]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -17.24
+offset_bottom = -17.240005
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_06ngr")
+stretch_mode = 3
+
+[node name="Btn_Decoration" type="Button" parent="LeftMenu" unique_id=1977294566]
+layout_mode = 2
+icon = ExtResource("1_i086g")
+
+[node name="TextureRect" type="TextureRect" parent="LeftMenu/Btn_Decoration" unique_id=956912737]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 1.0
+offset_top = 1.9999905
+offset_right = 3.0
+offset_bottom = 1.9999847
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("3_rb5gs")
+stretch_mode = 3
+
+[node name="Btn_Building" type="Button" parent="LeftMenu" unique_id=436039321]
+layout_mode = 2
+icon = ExtResource("1_i086g")
+
+[node name="TextureRect" type="TextureRect" parent="LeftMenu/Btn_Building" unique_id=847446362]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 4.0
+offset_top = -22.00001
+offset_right = 4.0
+offset_bottom = -19.000015
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("4_w8of4")
+stretch_mode = 3
+
+[node name="Btn_Terrain" type="Button" parent="LeftMenu" unique_id=266088219]
+layout_mode = 2
+icon = ExtResource("1_i086g")
+
+[node name="TextureRect" type="TextureRect" parent="LeftMenu/Btn_Terrain" unique_id=1945055568]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -3.0000095
+offset_bottom = -3.0000153
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("5_k3bvd")
+stretch_mode = 3
+
+[node name="RightTools" type="VBoxContainer" parent="." unique_id=1113748466]
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -211.08496
+offset_top = 181.755
+offset_right = -65.08496
+offset_bottom = 512.7554
+grow_horizontal = 0
+grow_vertical = 2
+theme_override_constants/separation = 35
+
+[node name="Btn_Hammer" type="Button" parent="RightTools" unique_id=1401767513]
+layout_mode = 2
+icon = ExtResource("1_i086g")
+
+[node name="TextureRect" type="TextureRect" parent="RightTools/Btn_Hammer" unique_id=896894210]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 4.080078
+offset_top = -5.7550144
+offset_right = 5.080078
+offset_bottom = -5.75502
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("6_1s5mq")
+stretch_mode = 3
+
+[node name="Btn_Shovel" type="Button" parent="RightTools" unique_id=440973454]
+layout_mode = 2
+icon = ExtResource("1_i086g")
+
+[node name="TextureRect" type="TextureRect" parent="RightTools/Btn_Shovel" unique_id=367189475]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 0.080078125
+offset_top = -1.7550144
+offset_right = 6.080078
+offset_bottom = 3.2449799
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("7_osxqn")
+stretch_mode = 3
+
+[node name="DrawerPanel" type="PanelContainer" parent="." unique_id=424033252]
+layout_mode = 0
+offset_left = 350.0
+offset_top = 500.0
+offset_right = 1080.0
+offset_bottom = 1245.0
+
+[node name="MarginContainer" type="MarginContainer" parent="DrawerPanel" unique_id=1333092258]
+layout_mode = 2
+
+[node name="ScrollContainer" type="ScrollContainer" parent="DrawerPanel/MarginContainer" unique_id=2116261561]
+layout_mode = 2
+
+[node name="ItemGrid" type="GridContainer" parent="DrawerPanel/MarginContainer/ScrollContainer" unique_id=1180061004]
+layout_mode = 2
+theme_override_constants/h_separation = 0
+theme_override_constants/v_separation = 0
+columns = 5
+
+[node name="GridButton" parent="DrawerPanel/MarginContainer/ScrollContainer/ItemGrid" unique_id=516024353 instance=ExtResource("2_k3bvd")]
+layout_mode = 2
+
+[node name="GridButton2" parent="DrawerPanel/MarginContainer/ScrollContainer/ItemGrid" unique_id=1165730271 instance=ExtResource("2_k3bvd")]
+layout_mode = 2
+
+[node name="GridButton3" parent="DrawerPanel/MarginContainer/ScrollContainer/ItemGrid" unique_id=968289117 instance=ExtResource("2_k3bvd")]
+layout_mode = 2
+
+[node name="GridButton4" parent="DrawerPanel/MarginContainer/ScrollContainer/ItemGrid" unique_id=741762655 instance=ExtResource("2_k3bvd")]
+layout_mode = 2
+
+[node name="GridButton5" parent="DrawerPanel/MarginContainer/ScrollContainer/ItemGrid" unique_id=534009429 instance=ExtResource("2_k3bvd")]
+layout_mode = 2
+
+[node name="GridButton6" parent="DrawerPanel/MarginContainer/ScrollContainer/ItemGrid" unique_id=1246829437 instance=ExtResource("2_k3bvd")]
+layout_mode = 2
+
+[node name="GridButton7" parent="DrawerPanel/MarginContainer/ScrollContainer/ItemGrid" unique_id=1114157748 instance=ExtResource("2_k3bvd")]
+layout_mode = 2
+
+[node name="GridButton8" parent="DrawerPanel/MarginContainer/ScrollContainer/ItemGrid" unique_id=1375532355 instance=ExtResource("2_k3bvd")]
+layout_mode = 2
+
+[node name="GridButton9" parent="DrawerPanel/MarginContainer/ScrollContainer/ItemGrid" unique_id=1641571491 instance=ExtResource("2_k3bvd")]
+layout_mode = 2
+
+[node name="GridButton10" parent="DrawerPanel/MarginContainer/ScrollContainer/ItemGrid" unique_id=1022801962 instance=ExtResource("2_k3bvd")]
+layout_mode = 2
+
+[node name="GridButton11" parent="DrawerPanel/MarginContainer/ScrollContainer/ItemGrid" unique_id=1455566370 instance=ExtResource("2_k3bvd")]
+layout_mode = 2

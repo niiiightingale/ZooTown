@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="ItemData" format=3 uid="uid://42dl5b4g8elh"]
+
+[ext_resource type="Texture2D" uid="uid://db0bti1p64pwb" path="res://Items/Items/grass/art/Grass_01.tres" id="1_s3jg0"]
+[ext_resource type="PackedScene" uid="uid://do2fnoqe8nwxt" path="res://Items/Items/grass/Grass.tscn" id="2_0xdlq"]
+[ext_resource type="Script" uid="uid://dby64onjtglmw" path="res://Items/ItemComponents/item_data.gd" id="3_gj7j2"]
+
+[resource]
+script = ExtResource("3_gj7j2")
+id = "草"
+icon = ExtResource("1_s3jg0")
+prefab = ExtResource("2_0xdlq")
+metadata/_custom_type_script = "uid://dby64onjtglmw"

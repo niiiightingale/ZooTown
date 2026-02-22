@@ -1,0 +1,7 @@
+[gd_resource type="AtlasTexture" format=3 uid="uid://b8tw7dnq5bkfm"]
+
+[ext_resource type="Texture2D" uid="uid://c703fgbxf2mj1" path="res://UI/BuildUI/BuildMenu_底图.png" id="1_taax6"]
+
+[resource]
+atlas = ExtResource("1_taax6")
+region = Rect2(121, 379, 138, 140)

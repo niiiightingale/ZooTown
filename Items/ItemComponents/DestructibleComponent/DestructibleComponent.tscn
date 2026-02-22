@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://bsm26dli1bv85"]
+
+[ext_resource type="Script" uid="uid://bieuel38b4rhc" path="res://Items/ItemComponents/DestructibleComponent/destructible_component.gd" id="1_s3xfh"]
+
+[node name="DestructibleComponent" type="Node" unique_id=1913233029]
+script = ExtResource("1_s3xfh")

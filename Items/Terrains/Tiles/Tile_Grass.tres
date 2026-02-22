@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="TerrainData" format=3 uid="uid://bk55bw1luadqe"]
+
+[ext_resource type="Texture2D" uid="uid://c46lw7f4608ci" path="res://Items/Terrains/Base_board.png" id="1_nxdys"]
+[ext_resource type="Texture2D" uid="uid://b2j36r4kgwg8m" path="res://Items/Terrains/Tiles/Tile_Grass_Mask.png" id="2_hkj7y"]
+[ext_resource type="Texture2D" uid="uid://dbsbm76sfq3v2" path="res://UI/BuildUI/art/Terrain_icon.tres" id="3_cadgd"]
+[ext_resource type="AudioStream" uid="uid://c1slwdcj52sua" path="res://Items/Terrains/Tiles/ItemPlaceSound.wav" id="4_1u4sf"]
+[ext_resource type="Script" uid="uid://dfk5ko8makd4v" path="res://GameManagers/TerrainManager/Scripts/terrain_data.gd" id="5_mbyw5"]
+[ext_resource type="Texture2D" uid="uid://dxudifc7e7dii" path="res://Items/Terrains/Base_mask.png" id="6_gnxwt"]
+
+[resource]
+script = ExtResource("5_mbyw5")
+id = "地皮grass"
+layer = 1
+icon = ExtResource("3_cadgd")
+border_texture = ExtResource("1_nxdys")
+texture = ExtResource("6_gnxwt")
+use_world_space_texture = true
+fill_texture = ExtResource("2_hkj7y")
+fill_scale = 0.06
+place_sound = ExtResource("4_1u4sf")
+metadata/_custom_type_script = "uid://dfk5ko8makd4v"

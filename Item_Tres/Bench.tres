@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="ItemData" format=3 uid="uid://co82yg2xc7qt7"]
+
+[ext_resource type="Texture2D" uid="uid://vhvpr7k3v73r" path="res://Items/Items/bench/art/Bench.tres" id="1_5yy4o"]
+[ext_resource type="PackedScene" uid="uid://bo0hs3tusgpix" path="res://Items/Items/bench/Bench.tscn" id="2_8nsg8"]
+[ext_resource type="Script" uid="uid://dby64onjtglmw" path="res://Items/ItemComponents/item_data.gd" id="3_7a6xi"]
+
+[resource]
+script = ExtResource("3_7a6xi")
+id = "长椅"
+icon = ExtResource("1_5yy4o")
+prefab = ExtResource("2_8nsg8")
+allowed_layers = Array[int]([0, 1, 2])
+metadata/_custom_type_script = "uid://dby64onjtglmw"

@@ -1,0 +1,20 @@
+[gd_scene format=3 uid="uid://cjagd04s7k23v"]
+
+[ext_resource type="Texture2D" uid="uid://b8tw7dnq5bkfm" path="res://UI/BuildUI/art/BuildUI_Base.tres" id="1_eg2oj"]
+[ext_resource type="Texture2D" uid="uid://db0bti1p64pwb" path="res://Items/Items/grass/art/Grass_01.tres" id="2_etw66"]
+
+[node name="GridButton" type="Button" unique_id=516024353]
+custom_minimum_size = Vector2(100, 100)
+offset_right = 8.0
+offset_bottom = 8.0
+icon = ExtResource("1_eg2oj")
+
+[node name="IconRect" type="TextureRect" parent="." unique_id=1768422988]
+layout_mode = 0
+offset_left = 12.615
+offset_top = 11.61
+offset_right = 132.61493
+offset_bottom = 131.60999
+texture = ExtResource("2_etw66")
+expand_mode = 1
+stretch_mode = 5

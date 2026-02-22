@@ -22,10 +22,10 @@ config/icon="res://icon.svg"
 
 [autoload]
 
-WorldManager="*res://_AutoLoad/world_manager.gd"
-GlobalCursor="*res://_AutoLoad/GlobalCursor.tscn"
-MouseScanner="*res://_AutoLoad/mouse_scanner.gd"
-GlobalState="*res://_AutoLoad/global_state.gd"
+ItemGridManager="*res://Global/item_grid_manager.gd"
+GlobalCursor="*res://Global/GlobalCursor/GlobalCursor.tscn"
+MouseScanner="*res://Global/GlobalCursor/mouse_scanner.gd"
+GameState="*res://Global/game_state.gd"
 
 [display]
 

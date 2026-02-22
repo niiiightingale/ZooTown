@@ -1,0 +1,23 @@
+[gd_scene format=3 uid="uid://cjj8lnfp6gtk2"]
+
+[ext_resource type="Script" uid="uid://bw1prweicu2g7" path="res://Global/GlobalCursor/GlobalCursor.gd" id="1_25lnx"]
+[ext_resource type="Texture2D" uid="uid://ccfabjvim8k6p" path="res://Global/GlobalCursor/Art/Mouse_Hand.png" id="2_enxk0"]
+[ext_resource type="Script" uid="uid://dny15j820sm28" path="res://Global/GlobalCursor/cursor_vistualizer.gd" id="3_cb8j5"]
+[ext_resource type="Texture2D" uid="uid://dddth08tcs8c8" path="res://Global/GlobalCursor/Art/MOUSE.png" id="4_qpfmo"]
+[ext_resource type="Texture2D" uid="uid://deomqhnga73dg" path="res://Global/GlobalCursor/Art/Cursor_Bin.png" id="5_wkwn3"]
+
+[node name="GlobalCursor" type="CanvasLayer" node_paths=PackedStringArray("visualCursor")]
+process_mode = 3
+layer = 101
+script = ExtResource("1_25lnx")
+visualCursor = NodePath("VirtualCursor")
+
+[node name="VirtualCursor" type="Sprite2D" parent="."]
+process_mode = 3
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("2_enxk0")
+offset = Vector2(35.345, 32.17)
+script = ExtResource("3_cb8j5")
+tex_normal = ExtResource("4_qpfmo")
+tex_build = ExtResource("2_enxk0")
+tex_delete = ExtResource("5_wkwn3")

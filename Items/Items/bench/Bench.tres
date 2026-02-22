@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="ItemData" format=3 uid="uid://2h2p56622wyg"]
+
+[ext_resource type="Texture2D" uid="uid://c08f8r6roepqm" path="res://Items/Items/bench/art/bench_icon.tres" id="1_2qjsn"]
+[ext_resource type="PackedScene" uid="uid://bo0hs3tusgpix" path="res://Items/Items/bench/Bench.tscn" id="1_kitie"]
+[ext_resource type="Script" uid="uid://dby64onjtglmw" path="res://Items/ItemComponents/item_data.gd" id="2_8n8vd"]
+
+[resource]
+script = ExtResource("2_8n8vd")
+item_name = "bench"
+icon = ExtResource("1_2qjsn")
+prefab = ExtResource("1_kitie")
+metadata/_custom_type_script = "uid://dby64onjtglmw"

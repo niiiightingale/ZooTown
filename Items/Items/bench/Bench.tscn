@@ -1,0 +1,23 @@
+[gd_scene format=3 uid="uid://bo0hs3tusgpix"]
+
+[ext_resource type="Texture2D" uid="uid://vhvpr7k3v73r" path="res://Items/Items/bench/art/Bench.tres" id="1_28kqs"]
+[ext_resource type="PackedScene" uid="uid://c130slvteas1p" path="res://Items/ItemComponents/FootprintComponent/FootprintComponent.tscn" id="2_pb583"]
+[ext_resource type="PackedScene" uid="uid://bsm26dli1bv85" path="res://Items/ItemComponents/DestructibleComponent/DestructibleComponent.tscn" id="3_3whcf"]
+[ext_resource type="PackedScene" uid="uid://dlh3rdmhm5iya" path="res://Items/ItemComponents/TweenComponent/TweenComponent.tscn" id="4_otyiq"]
+
+[node name="Bench" type="Node3D" unique_id=57078754]
+
+[node name="Sprite3D" type="Sprite3D" parent="." unique_id=2023087303]
+transform = Transform3D(0.431102, 0, 0, 0, 0.431102, 0, 0, 0, 0.431102, 0, 0.40395653, 0.32981682)
+billboard = 1
+alpha_cut = 1
+texture = ExtResource("1_28kqs")
+
+[node name="FootprintComponent" parent="." unique_id=800719012 instance=ExtResource("2_pb583")]
+footprint_map = "XXX
+XOX
+XXX"
+
+[node name="DestructibleComponent" parent="." unique_id=995021017 instance=ExtResource("3_3whcf")]
+
+[node name="TweenComponent" parent="." unique_id=65636919 instance=ExtResource("4_otyiq")]

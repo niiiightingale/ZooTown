@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="ItemData" format=3 uid="uid://do366marohl82"]
+
+[ext_resource type="Texture2D" uid="uid://cxqkjl3mbqbpf" path="res://Items/Items/street_light/art/Streetlight.tres" id="1_2yswc"]
+[ext_resource type="PackedScene" uid="uid://cjdbjsy1fm0fs" path="res://Items/Items/street_light/StreetLight.tscn" id="2_x3tul"]
+[ext_resource type="Script" uid="uid://dby64onjtglmw" path="res://Items/ItemComponents/item_data.gd" id="3_gh7op"]
+
+[resource]
+script = ExtResource("3_gh7op")
+id = "街灯"
+icon = ExtResource("1_2yswc")
+prefab = ExtResource("2_x3tul")
+allowed_layers = Array[int]([0, 1, 2])
+metadata/_custom_type_script = "uid://dby64onjtglmw"

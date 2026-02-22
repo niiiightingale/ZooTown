@@ -6,11 +6,14 @@
 [ext_resource type="Script" uid="uid://mkmkmtdqy0e2" path="res://GameManagers/PalcementManager/placement_manager.gd" id="8_70437"]
 [ext_resource type="Shader" uid="uid://b37cxc0dcrjf3" path="res://GameManagers/PalcementManager/grid_material.gdshader" id="8_bebxy"]
 [ext_resource type="Script" uid="uid://bbnwsqwiy4k7v" path="res://GameManagers/PalcementManager/placement_vistualizer.gd" id="8_q1qo6"]
-[ext_resource type="Resource" uid="uid://bm3xfoqyxgc0w" path="res://Terrain_Tres/Tile_Grass.tres" id="10_l3g8g"]
 [ext_resource type="FontFile" uid="uid://bc22oq1eh6oex" path="res://Fonts/OMORI_GAME2.ttf" id="10_mtdta"]
 [ext_resource type="Script" uid="uid://b1qcvhaby4d72" path="res://GameManagers/TerrainManager/Scripts/terrain_manager.gd" id="12_l3g8g"]
+[ext_resource type="Script" uid="uid://dfk5ko8makd4v" path="res://GameManagers/TerrainManager/Scripts/terrain_data.gd" id="13_dck4s"]
+[ext_resource type="Resource" uid="uid://bk55bw1luadqe" path="res://Items/Terrains/Tiles/Grass/Tile_Grass.tres" id="14_36pcp"]
 [ext_resource type="Script" uid="uid://bqiqeg5823ula" path="res://Items/Terrains/grid_visualizer.gd" id="14_bhsij"]
+[ext_resource type="Resource" uid="uid://bw04ep2mng4r8" path="res://Items/Terrains/Tiles/Ground/Tile_Ground.tres" id="14_dck4s"]
 [ext_resource type="PackedScene" uid="uid://cbs3s3ialsn3b" path="res://UI/PauseMenu/PauseMenu.tscn" id="15_bhsij"]
+[ext_resource type="Resource" uid="uid://ryppxgrh4osf" path="res://Items/Terrains/Tiles/Wood/Tile_Wood.tres" id="16_26hrr"]
 [ext_resource type="PackedScene" uid="uid://c4snf3dht4d76" path="res://UI/BuildUI/BuildUI.tscn" id="16_36pcp"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_fj7yv"]
@@ -48,6 +51,8 @@ shader_parameter/mouse_world_pos = Vector3(0, 0, 0)
 shader_parameter/show_radius = 10.0
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_xemsm"]
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_bhsij"]
 
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_ax72e"]
 emission_shape = 3
@@ -95,11 +100,10 @@ size = 25.0
 [node name="Tuner" parent="." unique_id=694072880 instance=ExtResource("2_fj7yv")]
 move_speed = 7.0
 
-[node name="PlacementManager" type="Node3D" parent="." unique_id=951988582 node_paths=PackedStringArray("visualizer", "terrain_manager")]
+[node name="PlacementManager" type="Node3D" parent="." unique_id=951988582 node_paths=PackedStringArray("visualizer")]
 script = ExtResource("8_70437")
 base_cell_size = 0.5
 visualizer = NodePath("PlacementVistualizer")
-terrain_manager = NodePath("../TerrainManager")
 
 [node name="PlacementVistualizer" type="Node3D" parent="PlacementManager" unique_id=524082914]
 script = ExtResource("8_q1qo6")
@@ -112,7 +116,7 @@ grid_radius = 5
 [node name="StaticBody3D" type="StaticBody3D" parent="." unique_id=2122752298]
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D" unique_id=1968335530]
-transform = Transform3D(0.515, 0, 0, 0, 0.515, 0, 0, 0, 0.515, -0.017190456, 0.014434338, -0.0077733994)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.017190456, 0.014434338, -0.0077733994)
 shape = SubResource("WorldBoundaryShape3D_xemsm")
 debug_color = Color(0, 0.5446108, 0.9289354, 1)
 
@@ -121,6 +125,12 @@ transform = Transform3D(100, 0, 0, 0, 100, 0, 0, 0, 100, 0.00011301041, 0.014912
 visible = false
 material_override = SubResource("ShaderMaterial_q1qo6")
 mesh = SubResource("PlaneMesh_xemsm")
+
+[node name="Ground" type="Sprite3D" parent="." unique_id=2111427466]
+transform = Transform3D(1.0255474, 0, 0, 0, -4.48281e-08, 1.0255474, 0, -1.0255474, -4.48281e-08, -0.063776076, 0.0084142685, -0.021395683)
+visible = false
+sorting_offset = -1000.0
+texture = SubResource("CompressedTexture2D_bhsij")
 
 [node name="AmbientParticles" type="GPUParticles3D" parent="." unique_id=1544323677]
 visible = false
@@ -133,8 +143,7 @@ draw_pass_1 = SubResource("TextMesh_q1qo6")
 
 [node name="TerrainManager" type="Node3D" parent="." unique_id=1486329107]
 script = ExtResource("12_l3g8g")
-base_terrain = ExtResource("10_l3g8g")
-initial_map_radius = 20
+terrain_resources = Array[ExtResource("13_dck4s")]([ExtResource("14_dck4s"), ExtResource("14_36pcp"), ExtResource("16_26hrr")])
 
 [node name="GridVisualizer" type="Node3D" parent="TerrainManager" unique_id=1363351522]
 visible = false

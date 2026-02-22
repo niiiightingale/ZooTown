@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="TerrainData" format=3 uid="uid://u2s4m07yumet"]
+
+[ext_resource type="Texture2D" uid="uid://c46lw7f4608ci" path="res://Items/Terrains/Base_board.png" id="1_low7e"]
+[ext_resource type="Texture2D" uid="uid://difugwpdoqihr" path="res://Items/Terrains/Tiles/Tile_Wood_Mask.png" id="2_yu2tj"]
+[ext_resource type="AudioStream" uid="uid://c1slwdcj52sua" path="res://Items/Terrains/Tiles/ItemPlaceSound.wav" id="3_1qtsq"]
+[ext_resource type="Script" uid="uid://dfk5ko8makd4v" path="res://GameManagers/TerrainManager/Scripts/terrain_data.gd" id="4_v0lld"]
+[ext_resource type="Texture2D" uid="uid://dxudifc7e7dii" path="res://Items/Terrains/Base_mask.png" id="5_5lplt"]
+
+[resource]
+script = ExtResource("4_v0lld")
+id = "wood"
+layer = 2
+icon = ExtResource("2_yu2tj")
+border_texture = ExtResource("1_low7e")
+texture = ExtResource("5_5lplt")
+use_world_space_texture = true
+fill_texture = ExtResource("2_yu2tj")
+place_sound = ExtResource("3_1qtsq")
+metadata/_custom_type_script = "uid://dfk5ko8makd4v"
