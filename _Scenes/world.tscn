@@ -2,7 +2,6 @@
 
 [ext_resource type="Script" uid="uid://caedyb5kvandx" path="res://GameManagers/CameraManager/CameraRig.gd" id="1_tlwt5"]
 [ext_resource type="PackedScene" uid="uid://rfkgg3vd7b2r" path="res://_Scenes/Player.tscn" id="2_fj7yv"]
-[ext_resource type="Material" uid="uid://ci1oxqj42gkrt" path="res://GameManagers/PalcementManager/radar_material.tres" id="7_bebxy"]
 [ext_resource type="Script" uid="uid://mkmkmtdqy0e2" path="res://GameManagers/PalcementManager/placement_manager.gd" id="8_70437"]
 [ext_resource type="Shader" uid="uid://b37cxc0dcrjf3" path="res://GameManagers/PalcementManager/grid_material.gdshader" id="8_bebxy"]
 [ext_resource type="Script" uid="uid://bbnwsqwiy4k7v" path="res://GameManagers/PalcementManager/placement_vistualizer.gd" id="8_q1qo6"]
@@ -86,9 +85,13 @@ environment = SubResource("Environment_aqk2v")
 [node name="CameraRig" type="Node3D" parent="." unique_id=810768563 node_paths=PackedStringArray("target")]
 script = ExtResource("1_tlwt5")
 target = NodePath("../Tuner")
+min_dist = 20.0
+max_dist = 65.0
+min_pitch = -30.0
+max_pitch = -80.0
 
 [node name="Camera3D" type="Camera3D" parent="CameraRig" unique_id=339402942]
-transform = Transform3D(1, 0, 0, 0, 0.4999999, 0.8660253, 0, -0.8660253, 0.4999999, 0, 28.015, 16.13)
+transform = Transform3D(1, 0, 0, 0, 0.7071067, 0.7071067, 0, -0.7071067, 0.7071067, 0, 15, 10)
 fov = 30.0
 size = 25.0
 
@@ -97,17 +100,13 @@ move_speed = 7.0
 
 [node name="PlacementManager" type="Node3D" parent="." unique_id=951988582 node_paths=PackedStringArray("visualizer", "terrain_manager")]
 script = ExtResource("8_70437")
-base_cell_size = 0.5
 visualizer = NodePath("PlacementVistualizer")
 terrain_manager = NodePath("../TerrainManager")
 
 [node name="PlacementVistualizer" type="Node3D" parent="PlacementManager" unique_id=524082914]
 script = ExtResource("8_q1qo6")
-radar_material = ExtResource("7_bebxy")
-base_cell_size = 0.5
 valid_preview_color = Color(0.37254903, 1, 0.23529412, 0.5254902)
 invalid_preview_color = Color(1, 0.5019608, 0.5019608, 0.4392157)
-grid_radius = 5
 
 [node name="StaticBody3D" type="StaticBody3D" parent="." unique_id=2122752298]
 

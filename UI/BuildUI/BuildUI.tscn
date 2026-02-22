@@ -17,7 +17,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-mouse_filter = 1
+mouse_filter = 2
 script = ExtResource("1_w8of4")
 grid_button_scene = ExtResource("2_k3bvd")
 drawer_closed_x = -1000.0
@@ -34,6 +34,7 @@ offset_right = 246.0
 offset_bottom = 587.0005
 grow_vertical = 2
 pivot_offset = Vector2(0, 378)
+mouse_filter = 0
 theme_override_constants/separation = 55
 
 [node name="Btn_Vegetation" type="Button" parent="LeftMenu" unique_id=883274717]
@@ -117,6 +118,7 @@ offset_right = -65.08496
 offset_bottom = 512.7554
 grow_horizontal = 0
 grow_vertical = 2
+mouse_filter = 0
 theme_override_constants/separation = 35
 
 [node name="Btn_Hammer" type="Button" parent="RightTools" unique_id=1401767513]

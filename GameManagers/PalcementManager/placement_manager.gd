@@ -1,25 +1,21 @@
 extends Node3D
 class_name PlacementManager
 
-@export_group("Grid System")
-@export var base_cell_size: float = 1.0 
-
 @export_group("References")
 @export var visualizer: PlacementVisualizer 
-# 🌟 新增：把你的 TerrainManager 节点拖到这个槽位里！
-@export var terrain_manager: TerrainManager
+@export var terrain_manager: TerrainManager # 必须拉进来，找地基局问话用！
 
-var current_footprint_cells: Array[Vector2i] = [Vector2i(0, 0)]
+@export_group("Debug")
+@export var show_debug_footprints: bool = true # 勾选后就能看到满地的势力圈！
 var current_item: ItemData = null
 
 func _ready() -> void:
-	# 🎯 核心改动 1：不再自己瞎定初始状态，而是老老实实监听老板（GameState）的画笔变化
 	GameState.brush_changed.connect(_on_brush_changed)
 
 func _process(_delta: float) -> void:
-	# 🎯 核心改动 2：所有的 Input 监听全部删掉！
-	# 只根据 GameState 当前的模式来干活
-	
+	if visualizer and ItemGridManager:
+		visualizer.update_debug_footprints(show_debug_footprints, ItemGridManager.placed_items)
+		
 	if GameState.current_mode not in [GameState.Mode.BUILD_ITEM, GameState.Mode.DELETE_ITEM, GameState.Mode.NORMAL]:
 		return
 
@@ -31,11 +27,7 @@ func _process(_delta: float) -> void:
 		GameState.Mode.NORMAL:
 			_process_normal_mode()
 
-# ==========================================
-# 📡 接收上级指令
-# ==========================================
 func _on_brush_changed(new_brush: Resource) -> void:
-	# 如果收到的是物件画笔，更新自己的模型虚影
 	if new_brush is ItemData:
 		current_item = new_brush
 		_update_item_data()
@@ -44,40 +36,78 @@ func _on_brush_changed(new_brush: Resource) -> void:
 		if visualizer: visualizer.hide_all()
 
 # ==========================================
-# 分支逻辑：建造
+# 🌟 自由建造模式核心
 # ==========================================
 func _process_build_mode() -> void:
 	if not visualizer or not current_item: return
 	
 	if MouseScanner.is_mouse_on_ground:
-		var snapped_pos = snap_to_grid(MouseScanner.ground_position)
-		var covered_cells = get_covered_cells(snapped_pos)
-		var can_place = is_placement_valid(covered_cells) 
+		var world_pos = MouseScanner.ground_position
+		# 提取 X 和 Z 作为 2D 平面坐标，交给数学计算用
+		var pos_2d = Vector2(world_pos.x, world_pos.z) 
 		
-		visualizer.update_radar(snapped_pos, MouseScanner.ground_position)
-		visualizer.update_build_preview(snapped_pos, can_place)
+		var can_place = is_placement_valid(world_pos, pos_2d) 
+		
+		# 🎯 彻底自由：不再传 snapped_pos，直接传世界坐标，虚影丝滑无极移动！
+
+		visualizer.update_build_preview(world_pos, can_place)
 		
 		if Input.is_action_just_pressed("left_mouse") and can_place:
-			place_item(snapped_pos, covered_cells)
+			place_item(world_pos, pos_2d)
 	else:
 		visualizer.hide_all()
 
+func is_placement_valid(world_pos: Vector3, pos_2d: Vector2) -> bool:
+	var radius = current_item.footprint_radius
+	
+	# 1. 问普查局：这片空地有被别人（按圆的半径）占用了吗？
+	# 注意：如果你把 ItemGridManager 改名了，这里请用新名字
+	if not ItemGridManager.is_position_valid(pos_2d, radius):
+		return false
+		
+	# 2. 问地基局：我脚下踩的这块地砖，符合我的要求吗？
+	if terrain_manager:
+		# 🌟 跨维度翻译：把极度精确的自由坐标，除以 2.0 向下取整，算出它踩在了地皮的哪个格子上
+		var logic_x = floor(world_pos.x / 2.0)
+		var logic_z = floor(world_pos.z / 2.0)
+		var logic_cell = Vector2i(logic_x, logic_z)
+		
+		var current_layer = terrain_manager.get_highest_layer(logic_cell)
+		if current_layer not in current_item.allowed_layers:
+			return false
+	else:
+		print("⚠️ 警告：PlacementManager 未绑定 TerrainManager！")
+		return false
+		
+	return true
+
+func place_item(world_pos: Vector3, pos_2d: Vector2) -> void:
+	if not current_item or not current_item.prefab: return
+	
+	var new_instance = current_item.prefab.instantiate()
+	add_child(new_instance)
+	new_instance.global_position = Vector3(world_pos.x, 0.0, world_pos.z)
+
+	# 登记到人口普查局
+	ItemGridManager.register_item(new_instance, pos_2d, current_item.footprint_radius)
+
+	# ⚠️ 注意：因为你的破坏组件以前需要接收数组，现在自由网格不需要了
+	# 只要它上面有 DestructibleComponent，玩家点拆除时直接 queue_free 掉实体
+	# 普查局的“验尸”机制会在下一帧自动把它除名，完美闭环！
+
 # ==========================================
-# 分支逻辑：删除
+# 交互与删除保持极简
 # ==========================================
 func _process_delete_mode() -> void:
 	if visualizer: visualizer.hide_all()
 	var target = MouseScanner.hovered_object
-	if Input.is_action_just_pressed("left_mouse") and target:
+	if Input.is_action_pressed("left_mouse") and target:
 		var comp = target.get_node_or_null("DestructibleComponent")
 		if comp:
 			comp.delete_instantly()
 		else:
 			target.queue_free()
 
-# ==========================================
-# 分支逻辑：普通互动
-# ==========================================
 func _process_normal_mode() -> void:
 	if visualizer: visualizer.hide_all()
 	var target = MouseScanner.hovered_object
@@ -85,18 +115,13 @@ func _process_normal_mode() -> void:
 		print("触发普通互动！对象是：", target.name)
 
 # ==========================================
-# 摆放与虚影生成逻辑 (保持不变)
+# 虚影生成
 # ==========================================
 func _update_item_data() -> void:
-	current_footprint_cells = [Vector2i(0, 0)] 
 	var sprite_clone: Sprite3D = null 
 	
 	if current_item and current_item.prefab:
 		var temp_instance = current_item.prefab.instantiate()
-		var comp = temp_instance.get_node_or_null("FootprintComponent")
-		if comp: 
-			current_footprint_cells = comp.occupied_cells.duplicate()
-			
 		for child in temp_instance.get_children():
 			if child is Sprite3D:
 				sprite_clone = child.duplicate()
@@ -106,49 +131,6 @@ func _update_item_data() -> void:
 		temp_instance.free() 
 	
 	if visualizer:
-		visualizer.set_item(current_item, current_footprint_cells, sprite_clone)
-
-func place_item(world_pos: Vector3, covered_cells: Array[Vector2i]) -> void:
-	if not current_item or not current_item.prefab: return
-	
-	var new_instance = current_item.prefab.instantiate()
-	add_child(new_instance)
-	new_instance.global_position = Vector3(world_pos.x, 0.0, world_pos.z)
-
-	ItemGridManager.register_item(covered_cells, new_instance)
-
-	var destructible = new_instance.get_node_or_null("DestructibleComponent")
-	if destructible: 
-		destructible.setup(covered_cells)
-
-func snap_to_grid(pos: Vector3) -> Vector3:
-	var step = base_cell_size
-	return Vector3(round(pos.x / step) * step, 0.0, round(pos.z / step) * step)
-
-func get_covered_cells(snapped_pos: Vector3) -> Array[Vector2i]:
-	var cells: Array[Vector2i] = []
-	var base_x = int(round(snapped_pos.x / base_cell_size))
-	var base_z = int(round(snapped_pos.z / base_cell_size))
-	for offset in current_footprint_cells:
-		cells.append(Vector2i(base_x + offset.x, base_z + offset.y))
-	return cells
-
-func is_placement_valid(covered_cells: Array[Vector2i]) -> bool:
-	for cell in covered_cells:
-		# 1. 问实体建筑局：这里有其他树或建筑挡着吗？
-		if ItemGridManager.is_cell_occupied(cell): 
-			return false 
-			
-		# 2. 问地基局：脚下的地形层级达标吗？
-		if terrain_manager:
-			var current_layer = terrain_manager.get_highest_layer(cell)
-			
-			# 如果脚下的最高层级（比如是 1），不在物品允许的层级列表（比如 [0]）里，直接拒绝！
-			if current_layer not in current_item.allowed_layers:
-				print("不符合！")
-				return false
-		else:
-			print("⚠️ 警告：PlacementManager 没有绑定 TerrainManager！")
-			return false # 安全起见，没连网就不让建
-			
-	return true
+		# 🎯 传递当前物品的半径（代替以前的空数组）
+		var radius = current_item.footprint_radius if current_item else 0.5
+		visualizer.set_item(current_item, radius, sprite_clone)

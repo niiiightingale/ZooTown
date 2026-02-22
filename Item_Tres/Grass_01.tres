@@ -9,4 +9,5 @@ script = ExtResource("3_gj7j2")
 id = "草"
 icon = ExtResource("1_s3jg0")
 prefab = ExtResource("2_0xdlq")
+footprint_radius = 0.4
 metadata/_custom_type_script = "uid://dby64onjtglmw"
